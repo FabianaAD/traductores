@@ -1,3 +1,8 @@
+'''
+- Fabiana Acosta; 10-10005
+- Gianni Manilia; 12-10903
+'''
+
 #!/user/bin/ruby
 require 'set'
 
@@ -15,7 +20,6 @@ class Token
 		print "linea #{l}, columna #{c}: #{nombre} '#{cont}'\n"
 	end
 end
-
 
 class TokenInt < Token
 	def initialize (linea,columna,cont)
@@ -44,6 +48,15 @@ class TokenId < Token
 	end
 end	
 
+class TokenCad < Token
+	def initialize (linea,columna,cont)
+		@nombre = "string"
+		@l = linea
+		@c = columna
+		@cont = cont
+	end
+end	
+
 class TokenSig < Token
 	def initialize (linea,columna,cont)
 		@nombre = "signo"
@@ -63,7 +76,7 @@ class TokenInesperado < Token
 end
 
 def verificar(t,l,c)
-	signos = Set.new ["=",";","(",")","div","mod","-","%","+","*","/"]
+	signos = Set.new ["=",";","(",")","div","mod","-","%","+","*","/","and","not","or","/=",">=","<=",">","<"]
 	t = t.split[0]
 	
 	if !t.nil?
@@ -77,7 +90,9 @@ def verificar(t,l,c)
 		# Número
 		numero = /\A(\d)+(.(\d)+)?/.match(t)
 		# Palabra reservada
-		palabra_reservada = /program|with|do|end|times|if|then|else|while|for|from|to|repeat|begin|func/.match(t)
+		palabra_reservada = /program|with|do|end|times|if|then|else|while|for|from|to|repeat|begin|func|true|false/.match(t)
+		# Cadena de caracteres
+		cadena_caracteres = /"(\w)*"/.match(t)
 
 		# El token es un número
 		if !numero.nil?
@@ -91,6 +106,10 @@ def verificar(t,l,c)
 		elsif !identificador.nil?
 			token = TokenId.new(l,c,identificador)
 			tam_aux = identificador.to_s.length
+		# El token es un string
+		elsif !cadena_caracteres.nil?
+			token = TokenCad.new(l,c,cadena_caracteres)
+			tam_aux = cadena_caracteres.to_s.length
 		# El primer caracter es un signo
 		elsif signos.include?(t[0])
 			token = TokenSig.new(l,c,t[0])
@@ -112,21 +131,14 @@ def verificar(t,l,c)
 					cnew = c + tam_aux
 					verificar(tnew,l,cnew)
 			end
-		
-
 	 end
-
-
 end
 
-
-
-
 archivo = ARGV[0]
-l=1
+l = 1
 File.open(archivo, 'r') do |arch|
 	while linea = arch.gets
-		c=1
+		c = 1
 		tam = linea.length
 		lin = linea
 		while tam>0 do
@@ -144,4 +156,3 @@ File.open(archivo, 'r') do |arch|
 		l+=1
 	end
 end
-

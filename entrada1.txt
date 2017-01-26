@@ -1,6 +1,6 @@
 program
     with
-        number x = 4;
+        number x * 4 {
     do
         repeat x times
             forward(50);
