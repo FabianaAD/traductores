@@ -45,52 +45,47 @@ class TokenId < Token
   end
 end
 
-class TokenSig < Token
-  def initialize (linea,columna,cont)
-    @nombre = "signo"
-    @l = linea
-    @c = columna
-    @cont = cont
-  end
-end
-
 def verificar(t,l,c)
 	palClav = Set.new ["program","with","do","end","times"]
 	# operadores = Set.new["==","/=",">=","<=",">","<","==","/="]
-	signos = Set.new ["=","{","}",";","(",")","{","}"]
+	# signos = Set.new["=",";","(",")","{","}"]
 	t= t.split[0]
 	
-	if !t.nil?
+	if t.nil?
 
+	 	#print "nulo\n"
+	else
 	 	tam = t.length
-	 	taux = tam
-	 	
+    	#tsig = /=|;|(|)|{|}/.match(t)
 	 	tid =  /\A([a-z])(\w)*/.match(t)
-	 	tint = /\A(\d)+(.(\d)+)?/.match(t)
-	 	tpc = /program|with|do|end|times/.match(t)
-
-    if !tint.nil?
-     	aux = TokenInt.new(l,c,tint)
-     	taux = tint.to_s.length
-	 	 elsif !tpc.nil?
-	 	  aux = TokenPalC.new(l,c,tpc)
-	 	  taux = tpc.to_s.length
-    elsif !tid.nil?
-     	aux = TokenId.new(l,c,tid)
-     	taux = tid.to_s.length
-    elsif signos.include?(t[0])
-      aux = TokenSig.new(l,c,t[0])
-      taux = 1
+	 	tint = /\A(\d)+(.(\d)+)?/.match(t) #problema con el :
+	 	taux = tam
+    	if !tint.nil?
+      		aux = TokenInt.new(l,c,tint)
+      		taux = tint.to_s.length
+        elsif palClav.include?(t)
+	 		aux = TokenPalC.new(l,c,t)
+    	elsif !tid.nil?
+      		aux = TokenId.new(l,c,tid)
+      		taux = tid.to_s.length
+    	#elsif !tsig.nil?
+      	#	aux = TokenSig.new(l,c,tid)
+      	#	taux = tsig.to_s.length
+	 	else
+	 		palabra="palabra"
+	 		aux = Token.new(palabra,l,c,t)
 	 	end
 	 	
 	 	aux.printT
 	 	if tam-taux>0
-    	tnew = t[taux,tam]
-    	cnew = c + taux
-    	verificar(tnew,l,cnew)
-    end
+      		tnew = t[taux,tam]
+      		cnew = c + taux
+      		verificar(tnew,l,cnew)
+    	end
 		
-	end
+
+	 end
+
 
 end
 
@@ -102,6 +97,7 @@ l=1
 File.open(archivo, 'r') do |arch|
   while linea = arch.gets
   	c=1
+#  	puts linea
   	tam = linea.length
   	lin = linea
   	while tam>0 do
