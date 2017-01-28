@@ -1,6 +1,6 @@
 program
     with
-        number x * 4 {
+        number palaBra <= "sdasdsdas" {
     do
         repeat x times
             forward(50);
