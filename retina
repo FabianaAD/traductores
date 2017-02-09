@@ -31,6 +31,15 @@ class TokenInt < Token
 	end
 end
 
+class TokenDato < Token
+	def initialize (linea,columna,cont)
+		@nombre = "tipo de dato"
+		@l = linea
+		@c = columna
+		@cont = cont
+	end
+end
+
 class TokenPalC < Token
 	def initialize (linea,columna,cont)
 		@nombre = "palabra reservada"
@@ -77,7 +86,7 @@ class TokenInesperado < Token
 end
 
 def verificar(t,l,c)
-	signos = Set.new ["=",";","(",")","div","mod","-","%","+","*","/","and","not","or","/=",">=","<=",">","<"]
+	signos = Set.new ["=",";","(",")","div","mod","-","%","+","*","/",",","and","not","or",">","<"]
 	t = t.split[0]
 	
 	if !t.nil?
@@ -90,15 +99,23 @@ def verificar(t,l,c)
 		identificador = /\A([a-z])(\w)*/.match(t)
 		# Número
 		numero = /\A(\d)+(.(\d)+)?/.match(t)
+		# Tipo de dato
+		tipo_dato = /number|boolean/.match(t)
 		# Palabra reservada
 		palabra_reservada = /program|with|do|end|times|if|then|else|while|for|from|to|repeat|begin|func|true|false/.match(t)
 		# Cadena de caracteres
 		cadena_caracteres = /"(\w)*"/.match(t)
+		# Operadores de dos caracteres
+		operadores = /==|>=|<=/.match(t)
 
 		# El token es un número
 		if !numero.nil?
 			token = TokenInt.new(l,c,numero)
 			tam_aux = numero.to_s.length
+		# El token es un tipo de dato
+		elsif !tipo_dato.nil?
+			token = TokenDato.new(l,c,tipo_dato)
+			tam_aux = tipo_dato.to_s.length
 		# El token es una palabra reservada
 		elsif !palabra_reservada.nil?
 			token = TokenPalC.new(l,c,palabra_reservada)
@@ -113,8 +130,13 @@ def verificar(t,l,c)
 			tam_aux = cadena_caracteres.to_s.length
 		# El primer caracter es un signo
 		elsif signos.include?(t[0])
-			token = TokenSig.new(l,c,t[0])
-			tam_aux = 1
+			if !operadores.nil?
+				token = TokenSig.new(l,c,operadores)
+				tam_aux = operadores.to_s.length
+			else
+				token = TokenSig.new(l,c,t[0])
+				tam_aux = 1
+			end
 		# El primer caracter es inesperado
 		elsif !signos.include?(t[0])
 			token = TokenInesperado.new(l,c,t[0])

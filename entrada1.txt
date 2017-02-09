@@ -2,7 +2,7 @@ program
     with
         number palaBra <= "sdasdsdas" {
     do
-        repeat x times
+        number x, times
             forward(50);
             rotatel(90);
         end;
