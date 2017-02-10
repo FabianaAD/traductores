@@ -4,16 +4,16 @@ $tokens = {
 	Pr_Boolean:					/\Aboolean\b/,
 	Program:						/\Aprogram\b/,
 	End:								/\Aend\b/,
-	With:								/\Awith\b/,
-	Times:							/\Atimes\b/,
 	Cond_If:						/\Aif\b/,
 	Cond_Then:					/\Athen\b/,
 	Cond_Else:					/\Aelse\b/,
 	Cond_While:					/\Awhile\b/,
 	Cond_Do:						/\Ado\b/,
-	For:								/\Afor\b/,
-	From:								/\Afrom\b/,
-	To:									/\Ato\b/,
+	Cond_For:						/\Afor\b/,
+	Cond_From:					/\Afrom\b/,
+	Cond_To:						/\Ato\b/,
+	With:								/\Awith\b/,
+	Times:							/\Atimes\b/,
 	Repeat:							/\Arepeat\b/,
 	Begin:							/\Abegin\b/,
 	Func:								/\Afunc\b/,
@@ -116,13 +116,13 @@ class Cond_Then < Token; end
 class Cond_Else < Token; end
 class Cond_While < Token; end
 class Cond_Do < Token; end
+class Cond_For < Token; end
+class Cond_From < Token; end
+class Cond_To < Token; end
 
 # Clases por arreglar
 class With < Token; end
 class Times < Token; end
-class For < Token; end
-class From < Token; end
-class To < Token; end
 class Repeat < Token; end
 class Begin < Token; end
 class Func < Token; end

@@ -346,7 +346,7 @@ racc_reduce_table = [
   8, 48, :_reduce_15,
   6, 48, :_reduce_16,
   8, 48, :_reduce_none,
-  10, 48, :_reduce_none,
+  10, 48, :_reduce_18,
   6, 48, :_reduce_none,
   4, 48, :_reduce_none,
   5, 48, :_reduce_none,
@@ -422,9 +422,9 @@ racc_token_table = {
   Cond_Then => 31,
   Cond_Else => 32,
   Cond_While => 33,
-  TkFor => 34,
-  TkFrom => 35,
-  TkTo => 36,
+  Cond_For => 34,
+  Cond_From => 35,
+  Cond_To => 36,
   TkRepeat => 37,
   TkBegin => 38,
   TkFunc => 39,
@@ -585,7 +585,12 @@ module_eval(<<'.,.,', 'retina_parser.y', 94)
 
 # reduce 17 omitted
 
-# reduce 18 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 96)
+  def _reduce_18(val, _values, result)
+     result = For.new(val[1],val[3],val[5],val[7]) 
+    result
+  end
+.,.,
 
 # reduce 19 omitted
 

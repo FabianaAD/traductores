@@ -69,7 +69,7 @@ class Tipo < AST
 	end
 end
 
-class Id < AST
+class Identificador < AST
 	attr_accessor :id
 
 	def initialize i
@@ -81,7 +81,7 @@ class Id < AST
 	end
 end
 
-class NodoIf < AST
+class If < AST
 	attr_accessor :cond, :inst1, :inst2
 
 	def initialize c, i1, i2=nil
@@ -108,7 +108,7 @@ class NodoIf < AST
 	end
 end	
 
-class NodoWhile < AST
+class While < AST
 	attr_accessor :cond, :inst
 
 	def initialize c, i
@@ -127,6 +127,33 @@ class NodoWhile < AST
 		@inst.print_ast indent + "  " if @inst.respond_to? :print_ast
 	end
 end	
+
+class For < AST
+	attr_accessor :id, :from, :to, :bloque
+
+	def initialize i,f,t,b
+		@id = Identificador.new(i)
+		@from = Numero.new(f)
+		@to = Numero.new(t)
+		@bloque = b
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		@id.print_ast indent + "  " if @id.respond_to? :print_ast
+
+		puts "#{indent}From:"
+		@from.print_ast indent + "  " if @from.respond_to? :print_ast
+
+		puts "#{indent}To:"
+		@to.print_ast indent + "  " if @to.respond_to? :print_ast
+
+		puts "#{indent}Bloque:"
+		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+
+	end
+end
 
 # Clases arregladas
 class Igual < OperacionBinaria; end
@@ -151,12 +178,11 @@ class Fin < PalabraReservada; end
 class Punto_Coma < Signo; end
 class Number < Tipo; end
 class Boolean < Tipo; end
-class Identificador < Id; end
-class If < NodoIf; end
 class Then < PalabraReservada; end
 class Else < PalabraReservada; end
-class While < NodoWhile; end
 class Do < PalabraReservada; end
+class From < PalabraReservada; end
+class To < PalabraReservada; end
 
 # Clases por arreglar
 class TkAbreParentesis < Signo; end
@@ -164,9 +190,6 @@ class TkCierraParentesis < Signo; end
 class TkComa < Signo; end
 class TkWith < PalabraReservada; end
 class TkTimes < PalabraReservada; end
-class TkFor < PalabraReservada; end
-class TkFrom < PalabraReservada; end
-class TkTo < PalabraReservada; end
 class TkRepeat < PalabraReservada; end
 class TkBegin < PalabraReservada; end
 class TkFunc < PalabraReservada; end
