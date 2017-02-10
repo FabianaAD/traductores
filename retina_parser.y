@@ -68,7 +68,7 @@ start Inicio
 
 rule
 		
-		Inicio  : Funcion 'program' Bloque 'end' ';'
+		Inicio  : Funcion 'program' Bloque 'end'
 						| 'program' Bloque 'end' ';'
 						;
 
@@ -79,12 +79,13 @@ rule
 						| 'func' 'id' '(' ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
 						;
 
-		Arg			: Tipo 'id'
-						| Arg, Tipo 'id'
+		Arg			: Tipo ',' 'id'
+						| Arg ',' Tipo 'id'
 						;
 
 		Bloque  : Tipo Id ';'											
 						| Tipo 'id' '=' Exp ';'
+						| 'id' = Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'
 						| 'while' Exp 'do' Bloque 'end' ';'
@@ -97,8 +98,8 @@ rule
 
 		Attr		: Exp
 						| Id
-						| Attr, Exp
-						| Attr, Id
+						| Attr ',' Exp
+						| Attr ',' Id
 						;
 
 		Id      : Id ',' 'id'
@@ -131,6 +132,7 @@ rule
 						| Exp '=' Exp											{ result = }
 						| Exp '/''=' Exp									{ result = }
 						| Exp '==' Exp										{ result = }
+						| 'id'														{ result = }
 						;
 
 ---- header
