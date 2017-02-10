@@ -13,8 +13,8 @@ $tokens = {
 	Cond_From:					/\Afrom\b/,
 	Cond_To:						/\Ato\b/,
 	With:								/\Awith\b/,
-	Times:							/\Atimes\b/,
-	Repeat:							/\Arepeat\b/,
+	Cond_Repeat:				/\Arepeat\b/,
+	Cond_Times:					/\Atimes\b/,
 	Begin:							/\Abegin\b/,
 	Func:								/\Afunc\b/,
 	True:								/\Atrue\b/,
@@ -119,11 +119,11 @@ class Cond_Do < Token; end
 class Cond_For < Token; end
 class Cond_From < Token; end
 class Cond_To < Token; end
+class Cond_Repeat < Token; end
+class Cond_Times < Token; end
 
 # Clases por arreglar
 class With < Token; end
-class Times < Token; end
-class Repeat < Token; end
 class Begin < Token; end
 class Func < Token; end
 class True < Token; end

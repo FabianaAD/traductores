@@ -155,6 +155,26 @@ class For < AST
 	end
 end
 
+class Repeat < AST
+	attr_accessor :n, :bloque
+
+	def initialize n,b
+		@n = Numero.new(n)
+		@bloque = b
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		puts "#{indent}Times:"
+		@n.print_ast indent + "  " if @n.respond_to? :print_ast
+
+		puts "#{indent}Bloque:"
+		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+
+	end
+end
+
 # Clases arregladas
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
@@ -183,14 +203,13 @@ class Else < PalabraReservada; end
 class Do < PalabraReservada; end
 class From < PalabraReservada; end
 class To < PalabraReservada; end
+class Times < PalabraReservada; end
 
 # Clases por arreglar
 class TkAbreParentesis < Signo; end
 class TkCierraParentesis < Signo; end
 class TkComa < Signo; end
 class TkWith < PalabraReservada; end
-class TkTimes < PalabraReservada; end
-class TkRepeat < PalabraReservada; end
 class TkBegin < PalabraReservada; end
 class TkFunc < PalabraReservada; end
 class TkTrue < PalabraReservada; end
