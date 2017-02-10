@@ -22,7 +22,6 @@ def main
 	# Obtener tokens hasta que se termine el input
 	begin
 		while lexer.catch_lexeme; end
-
 		begin
 			lexer = Lexer.new input
 			parser = Parser.new
@@ -32,10 +31,12 @@ def main
 			puts e
 			return
 		end
+
 	# Tomar el primer error lexicografico
 	rescue LexicographicError => e
 		puts e
 		return
+
 	end
 end
 

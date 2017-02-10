@@ -1,48 +1,48 @@
 $tokens = {
-	Numero:				/\A(\d)+(.(\d)+)?/,
-	Number: 			/\Anumber\b/,
-	Boolean:			/\Aboolean\b/,
-	Program:			/\Aprogram\b/,
-	With:				/\Awith\b/,
-	Do:					/\Ado\b/,
-	End:				/\Aend\b/,
-	Times:				/\Atimes\b/,
-	If:					/\Aif\b/,
-	Then:				/\Athen\b/,
-	Else:				/\Aelse\b/,
-	While:				/\Awhile\b/,
-	For:				/\Afor\b/,
-	From:				/\Afrom\b/,
-	To:					/\Ato\b/,
-	Repeat:				/\Arepeat\b/,
-	Begin:				/\Abegin\b/,
-	Func:				/\Afunc\b/,
-	True:				/\Atrue\b/,
-	False:				/\Afalse\b/,
-	And:				/\Aand\b/,
-	Not:				/\Anot\b/,
-	Or:	 				/\Aor\b/,
-	Div:				/\Adiv\b/,
-	Mod:				/\Amod\b/,
-	Id:					/\A([a-z])(\w)*/,
-	Cadena:				/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
-	Comentario:			/\A#(\w)*\b/,
-	Igual:				/\A=/,
-	PuntoComa:			/\A;/,
-	AbreParentesis:		/\A\(/,
-	CierraParentesis:	/\A\)/,
-	Resta:				/\A\-/,
-	Modulo:				/\A%\b/,
-	Suma:				/\A\+/,
-	Multiplicacion:		/\A\*/,
-	Division:			/\A\//,
-	Coma:				/\A,/,
-	MayorEstricto:		/\A>/,
-	MenorEstricto:		/\A</,
-	Equivalencia:		/\A==\b/,
-	Inequivalencia:		/\A\/=\b/,
-	MayorIgual:			/\A>=\b/,
-	MenorIgual:			/\A<=\b/
+	Digit:							/\A\d+/,
+	Pr_Number: 					/\Anumber\b/,
+	Boolean:						/\Aboolean\b/,
+	Program:						/\Aprogram\b/,
+	End:								/\Aend\b/,
+	With:								/\Awith\b/,
+	Do:									/\Ado\b/,
+	Times:							/\Atimes\b/,
+	If:									/\Aif\b/,
+	Then:								/\Athen\b/,
+	Else:								/\Aelse\b/,
+	While:							/\Awhile\b/,
+	For:								/\Afor\b/,
+	From:								/\Afrom\b/,
+	To:									/\Ato\b/,
+	Repeat:							/\Arepeat\b/,
+	Begin:							/\Abegin\b/,
+	Func:								/\Afunc\b/,
+	True:								/\Atrue\b/,
+	False:							/\Afalse\b/,
+	Not:								/\Anot/,
+	And:								/\Aand/,
+	Or:	 								/\Aor/,
+	Fraccion_Entera:		/\Adiv/,
+	Residuo_Entero:			/\Amod/,
+	Id:									/\A([a-z])(\w)*\b/,
+	Cadena:							/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
+	Comentario:					/\A#(\w)*\b/,
+	Asignacion:					/\A=/,
+	Adicion:						/\A\+/,
+	Sustraccion:				/\A\-/,
+	Repeticion:					/\A\*/,
+	Fraccion_Exacta:		/\A\//,
+	Residuo_Exacto:			/\A%/,
+	MayorEstricto:			/\A>/,
+	MenorEstricto:			/\A</,
+	MayorIgual:					/\A>=\b/,
+	MenorIgual:					/\A<=\b/,
+	Equivale:						/\A==\b/,
+	Inequivale:					/\A\/=\b/,
+	PuntoComa:					/\A;/,
+	AbreParentesis:			/\A\(/,
+	CierraParentesis:		/\A\)/,
+	Coma:								/\A,/
 }
 
 class Token
@@ -69,22 +69,53 @@ end
 
 class SyntacticError < RuntimeError
 
-    def initialize(tok)
-        @token = tok
-    end
+		def initialize(tok)
+				@token = tok
+		end
 
-    def to_s
-        "Syntactic error on: #{@token}"   
-    end
+		def to_s
+				"Syntactic error on: #{@token}"   
+		end
 end
 
-class Numero < Token; end
-class Number < Token; end
-class Boolean < Token; end
+class Digit < Token
+	def to_s
+		"TkDigit(#{@t})"
+	end
+
+	def to_i
+		@t.to_i
+	end
+end
+
+# Clases que estan listas
+class Asignacion < Token; end
+class Adicion < Token; end
+class Sustraccion < Token; end
+class Repeticion < Token; end
+class Fraccion_Exacta < Token; end
+class Residuo_Exacto < Token; end
+class Fraccion_Entera < Token; end
+class Residuo_Entero < Token; end
+class Not < Token; end
+class And < Token; end
+class Or < Token; end
+class MayorEstricto < Token; end
+class MenorEstricto < Token; end
+class MayorIgual < Token; end
+class MenorIgual < Token; end
+class Equivale < Token; end
+class Inequivale < Token; end
 class Program < Token; end
+class End < Token; end
+class PuntoComa < Token; end
+class Pr_Number < Token; end
+class Id < Token; end
+
+# Clases por arreglar
+class Boolean < Token; end
 class With < Token; end
 class Do < Token; end
-class End < Token; end
 class Times < Token; end
 class If < Token; end
 class Then < Token; end
@@ -98,27 +129,8 @@ class Begin < Token; end
 class Func < Token; end
 class True < Token; end
 class False < Token; end
-class And < Token; end
-class Not < Token; end
-class Or < Token; end
-class Div < Token; end
-class Mod < Token; end
-class Id < Token; end
 class Cadena < Token; end
 class Comentario < Token; end
-class Igual < Token; end
-class PuntoComa < Token; end
 class AbreParentesis < Token; end
 class CierraParentesis < Token; end
-class Resta < Token; end
-class Modulo < Token; end
-class Suma < Token; end
-class Multiplicacion < Token; end
-class Division < Token; end
 class Coma < Token; end
-class MayorEstricto < Token; end
-class MenorEstricto < Token; end
-class Equivalencia < Token; end
-class Inequivalencia < Token; end
-class MayorIgual < Token; end
-class MenorIgual < Token; end

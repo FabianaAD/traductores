@@ -19,33 +19,38 @@ class Parser
 
 		# Asignar alias a los tokens
 		convert
-			'='           'TkAsignacion'
-			';'           'TkPuntoComa'
+			# Tokens listos
+			'num'         'Digit'
+			'='           'Asignacion'
+			'+'           'Adicion'
+			'-'           'Sustraccion'
+			'*'           'Repeticion'
+			'/'           'Fraccion_Exacta'
+			'%'           'Residuo_Exacto'
+			'div'         'Fraccion_Entera'
+			'mod'         'Residuo_Entero'
+			'not'         'Not'
+			'and'         'And'
+			'or'          'Or'
+			'>'           'MayorEstricto'
+			'<'           'MenorEstricto'
+			'>='          'MayorIgual'
+			'<='          'MenorIgual'
+			'=='          'Equivale'
+			'/='          'Inequivale'
+			'program'     'Program'
+			'end'         'End'
+			';'           'PuntoComa'
+			'number'      'Pr_Number'
+			'id'          'Id'
+			
+			# Tokens por arreglar
 			'('           'TkAbreParentesis'
 			')'           'TkCierraParentesis'
-			'div'         'TkDiv'
-			'mod'         'TkMod'
-			'-'           'TkResta'
-			'%'           'TkModulo'
-			'+'           'TkSuma'
-			'*'           'TkMultiplicacion'
-			'/'           'TkDivision'
 			','           'TkComa'  
-			'and'         'TkAnd'
-			'not'         'TkNot'
-			'or'          'TkOr'
-			'>'           'TkMayorEstricto'
-			'<'           'TkMenorEstricto'
-			'=='          'TkEquivalencia'
-			'/='          'TkInequivalencia'
-			'>='          'TkMayorIgual'
-			'<='          'TkMenorIgual'
-			'number'      'TkNumber'
 			'boolean'     'TkBoolean'
-			'program'     'TkProgram'
 			'with'        'TkWith'
 			'do'          'TkDo'
-			'end'         'TkEnd'
 			'times'       'TkTimes'
 			'if'          'TkIf'
 			'then'        'TkThen'
@@ -59,8 +64,6 @@ class Parser
 			'func'        'TkFunc'
 			'true'        'TkFunc'
 			'false'       'TkFalse'
-			'id'          'TkId'
-			'num'         'TkNum'
 end
 
 # Creacion de la gramatica
@@ -68,8 +71,8 @@ start Inicio
 
 rule
 		
-		Inicio  : Funcion 'program' Bloque 'end'
-						| 'program' Bloque 'end' ';'
+		Inicio  : Funcion 'program' Bloque 'end' ';'
+						| 'program' Bloque 'end' ';'					{ result = Inicio.new(val[1]) }
 						;
 
 		Funcion	: Funcion Funcion
@@ -83,9 +86,10 @@ rule
 						| Arg ',' Tipo 'id'
 						;
 
-		Bloque  : Tipo Id ';'											
+		Bloque  : Tipo Id ';'																															
 						| Tipo 'id' '=' Exp ';'
-						| 'id' = Exp ';'
+						| 'id' '=' Exp ';'
+						| 'num' '=' Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'
 						| 'while' Exp 'do' Bloque 'end' ';'
@@ -94,6 +98,8 @@ rule
 						| 'repeat' 'num' 'times' Bloque 'end' ';'
 						| 'id' '(' ')' ';'
 						| 'id' '(' Attr ')' ';'
+						| Exp ';'
+						| Bloque Bloque
 						;
 
 		Attr		: Exp
@@ -106,33 +112,32 @@ rule
 						| 'id'
 						;
 
-		Tipo    : 'number'
+		Tipo    : 'number'					
 						| 'boolean'
 						;
 
-		Exp     : '(' Exp ')'											{ result = }
-						| Exp '+' Exp											{ result = }
-						| Exp '-' Exp											{ result = }
-						| Exp '*' Exp											{ result = }
-						| Exp '/' Exp											{ result = }
-						| Exp '%' Exp											{ result = }
-						| Exp 'mod' Exp										{ result = }
-						| Exp 'div' Exp										{ result = }
-						| 'num'														{ result = }
-						| '-' Exp													{ result = }
-						| Exp 'and' Exp										{ result = }
-						| Exp 'or' Exp										{ result = }
-						| 'not' Exp												{ result = }
-						| 'true'													{ result = }
-						| 'false'													{ result = }
-						| Exp '>' Exp											{ result = }
-						| Exp '<' Exp											{ result = }
-						| Exp '<=' Exp										{ result = }
-						| Exp '>=' Exp										{ result = }
-						| Exp '=' Exp											{ result = }
-						| Exp '/''=' Exp									{ result = }
-						| Exp '==' Exp										{ result = }
-						| 'id'														{ result = }
+		Exp     : 'num'							{ result = Numero.new(val[0]) }
+						| 'id'														
+						| 'true'													
+						| 'false'													
+						| '-' Exp													
+						| Exp '+' Exp				{ result = Suma.new(val[0],val[2]) }								
+						| Exp '-' Exp				{ result = Resta.new(val[0],val[2]) }							
+						| Exp '*' Exp				{ result = Multiplicacion.new(val[0],val[2]) }						
+						| Exp '/' Exp				{ result = Division_Exacta.new(val[0],val[2]) }							
+						| Exp '%' Exp				{ result = Resto_Exacto.new(val[0],val[2]) }
+						| Exp 'div' Exp			{ result = Division_Entera.new(val[0],val[2]) }				
+						| Exp 'mod' Exp			{ result = Resto_Entero.new(val[0],val[2]) }
+						| 'not' Exp					{ result = Negado.new(val[1])}							
+						| Exp 'and' Exp			{ result = Conjuncion.new(val[0],val[2]) }							
+						| Exp 'or' Exp			{ result = Disyuncion.new(val[0],val[2]) }							
+						| Exp '>' Exp				{ result = Mayor_Estricto.new(val[0],val[2]) }							
+						| Exp '<' Exp				{ result = Menor_Estricto.new(val[0],val[2]) }							
+						| Exp '>=' Exp			{ result = Mayor_Igual.new(val[0],val[2]) }							
+						| Exp '<=' Exp			{ result = Menor_Igual.new(val[0],val[2]) }																	
+						| Exp '==' Exp			{ result = Equivalencia.new(val[0],val[2]) }							
+						| Exp '/''=' Exp		{ result = Inequivalencia.new(val[0],val[2]) }							
+						| '(' Exp ')'								
 						;
 
 ---- header
@@ -147,7 +152,7 @@ class SyntacticError < RuntimeError
     end
 
     def to_s
-        "Syntactic error on: #{@token}"   
+        "Error de sintaxis en: #{@token}"   
     end
 end
 

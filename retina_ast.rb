@@ -14,7 +14,7 @@ class AST
 	end
 end
 
-class Digito < AST
+class Numero < AST
 	attr_accessor :digito
 
 	def initialize d 
@@ -67,33 +67,37 @@ class Texto < AST
 	end
 end
 
-class TkAsignacion < OperacionBinaria; end
-class TkPuntoComa < Signo; end
+# Clases arregladas
+class Igual < OperacionBinaria; end
+class Suma < OperacionBinaria; end
+class Resta < OperacionBinaria; end
+class Multiplicacion < OperacionBinaria; end
+class Division_Exacta < OperacionBinaria; end
+class Resto_Exacto < OperacionBinaria; end
+class Division_Entera < OperacionBinaria; end
+class Resto_Entero < OperacionBinaria; end
+class Negado < OperacionUnaria; end
+class Conjuncion < OperacionBinaria; end
+class Disyuncion < OperacionBinaria; end
+class Mayor_Estricto < OperacionBinaria; end
+class Menor_Estricto < OperacionBinaria; end
+class Mayor_Igual < OperacionBinaria; end
+class Menor_Igual < OperacionBinaria; end
+class Equivalencia < OperacionBinaria; end
+class Inequivalencia < OperacionBinaria; end
+class Inicio < PalabraReservada; end
+class Fin < PalabraReservada; end
+class Punto_Coma < Signo; end
+class Number < PalabraReservada; end
+class Identificador < Texto; end
+
+# Clases por arreglar
 class TkAbreParentesis < Signo; end
 class TkCierraParentesis < Signo; end
-class TkDiv < OperacionBinaria; end
-class TkMod < OperacionBinaria; end
-class TkResta < OperacionBinaria; end
-class TkModulo < OperacionBinaria; end
-class TkSuma < OperacionBinaria; end
-class TkMultiplicacion < OperacionBinaria; end
-class TkDivision < OperacionBinaria; end
 class TkComa < Signo; end
-class TkAnd < OperacionBinaria; end
-class TkNot < OperacionUnaria; end
-class TkOr < OperacionBinaria; end
-class TkMayorEstricto < OperacionBinaria; end
-class TkMenorEstricto < OperacionBinaria; end
-class TkEquivalencia < OperacionBinaria; end
-class TkInequivalencia < OperacionBinaria; end
-class TkMayorIgual < OperacionBinaria; end
-class TkMenorIgual < OperacionBinaria; end
-class TkNumber < PalabraReservada; end
 class TkBoolean < PalabraReservada; end
-class TkProgram < PalabraReservada; end
 class TkWith < PalabraReservada; end
 class TkDo < PalabraReservada; end
-class TkEnd < PalabraReservada; end
 class TkTimes < PalabraReservada; end
 class TkIf < PalabraReservada; end
 class TkThen < PalabraReservada; end
@@ -107,5 +111,3 @@ class TkBegin < PalabraReservada; end
 class TkFunc < PalabraReservada; end
 class TkTrue < PalabraReservada; end
 class TkFalse < PalabraReservada; end
-class TkId < Texto; end
-class TkNum < Digito; end
