@@ -1,3 +1,3 @@
 program
-	number estoesunid;
+	if 4+4 then 2+2; else 2*3; end;
 end;

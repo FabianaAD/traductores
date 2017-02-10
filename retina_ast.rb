@@ -62,20 +62,51 @@ end
 class Tipo < AST
 	attr_reader :nombre, :id, :valor
 	
-	def initialize nombre, id, valor=""
-		@nombre = nombre
-		@id = id
-		@valor = valor
+	def initialize n, i, v=nil
+		@nombre = n
+		@id = i
+		@valor = v
 	end
 end
 
-class Texto < AST
-	attr_accessor :Texto
+class Id < AST
+	attr_accessor :id
 
-	def initialize tx
-		@texto = tx
+	def initialize i
+		@id = i
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}: #{@d}"
 	end
 end
+
+class NodoIf < AST
+	attr_accessor :cond, :inst1, :inst2
+
+	def initialize c, i1, i2=nil
+		@cond = c
+		@inst1 = i1
+		@inst2 = i2
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		indent += "  "
+		puts "#{indent}Condicion:"
+		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
+
+		puts "#{indent}Bloque then:"
+		@inst1.print_ast indent + "  " if @inst1.respond_to? :print_ast
+
+		# Si hay dos bloques de instrucciones
+		if @inst2 != nil
+			puts "#{indent}Bloque else:"
+			@inst2.print_ast indent + "  " if @inst2.respond_to? :print_ast	
+		end
+	end
+end	
 
 # Clases arregladas
 class Igual < OperacionBinaria; end
@@ -100,7 +131,10 @@ class Fin < PalabraReservada; end
 class Punto_Coma < Signo; end
 class Number < Tipo; end
 class Boolean < Tipo; end
-class Identificador < Texto; end
+class Identificador < Id; end
+class If < NodoIf; end
+class Then < PalabraReservada; end
+class Else < PalabraReservada; end
 
 # Clases por arreglar
 class TkAbreParentesis < Signo; end
@@ -109,9 +143,6 @@ class TkComa < Signo; end
 class TkWith < PalabraReservada; end
 class TkDo < PalabraReservada; end
 class TkTimes < PalabraReservada; end
-class TkIf < PalabraReservada; end
-class TkThen < PalabraReservada; end
-class TkElse < PalabraReservada; end
 class TkWhile < PalabraReservada; end
 class TkFor < PalabraReservada; end
 class TkFrom < PalabraReservada; end

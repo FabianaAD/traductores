@@ -43,7 +43,10 @@ class Parser
 			';'           'PuntoComa'
 			'number'      'Pr_Number'
 			'boolean'     'Pr_Boolean'
-			'id'          'Id'
+			'id'          'ID'
+			'if'          'Cond_If'
+			'then'        'Cond_Then'
+			'else'        'Cond_Else'
 			
 			# Tokens por arreglar
 			'('           'TkAbreParentesis'
@@ -52,9 +55,6 @@ class Parser
 			'with'        'TkWith'
 			'do'          'TkDo'
 			'times'       'TkTimes'
-			'if'          'TkIf'
-			'then'        'TkThen'
-			'else'        'TkElse'
 			'while'       'TkWhile'
 			'for'         'TkFor'
 			'from'        'TkFrom'
@@ -72,7 +72,7 @@ start Inicio
 rule
 		
 		Inicio  : Funcion 'program' Bloque 'end' ';'
-						| 'program' Bloque 'end' ';'					{ result = Inicio.new(val[1]) }
+						| 'program' Bloque 'end' ';'																	{ result = Inicio.new(val[1]) }
 						;
 
 		Funcion	: Funcion Funcion
@@ -87,11 +87,11 @@ rule
 						;
 
 		Bloque  : TipoVar  Id ';'																							{ result = Tipo.new(val[0],val[1]) }
-						| TipoVar  'id' '=' Exp ';'																		
-						| 'id' '=' Exp ';'
+						| TipoVar  'id' '=' Exp ';'																		{ result = Tipo.new(val[0],val[1],val[3]) }
+						| 'id' '=' Exp ';'																						{ result = Identificador.new(val[0]) }
 						| 'num' '=' Exp ';'
-						| 'if' Exp 'then' Bloque 'end' ';'
-						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'
+						| 'if' Exp 'then' Bloque 'end' ';'														{ result = If.new(val[1],val[3]) }
+						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'							{ result = If.new(val[1],val[3],val[5]) }
 						| 'while' Exp 'do' Bloque 'end' ';'
 						| 'with' 'number' 'id' ';' 'do' Bloque 'end' ';'
 						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'
@@ -108,8 +108,8 @@ rule
 						| Attr ',' Id
 						;
 
-		Id      : Id ',' 'id'
-						| 'id'
+		Id      : Id ',' 'id'				{ result = Identificador.new(val[2]) }
+						| 'id'							{ result = Identificador.new(val[0]) }
 						;
 
 		TipoVar : 'number'					
@@ -117,7 +117,7 @@ rule
 						;
 
 		Exp     : 'num'							{ result = Numero.new(val[0]) }
-						| 'id'														
+						| 'id'							{ result = Identificador.new(val[0]) }							
 						| 'true'													
 						| 'false'													
 						| '-' Exp													

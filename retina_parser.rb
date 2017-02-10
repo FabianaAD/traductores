@@ -339,11 +339,11 @@ racc_reduce_table = [
   3, 49, :_reduce_none,
   4, 49, :_reduce_none,
   3, 48, :_reduce_10,
-  5, 48, :_reduce_none,
+  5, 48, :_reduce_11,
+  4, 48, :_reduce_12,
   4, 48, :_reduce_none,
-  4, 48, :_reduce_none,
-  6, 48, :_reduce_none,
-  8, 48, :_reduce_none,
+  6, 48, :_reduce_14,
+  8, 48, :_reduce_15,
   6, 48, :_reduce_none,
   8, 48, :_reduce_none,
   10, 48, :_reduce_none,
@@ -356,12 +356,12 @@ racc_reduce_table = [
   1, 53, :_reduce_none,
   3, 53, :_reduce_none,
   3, 53, :_reduce_none,
-  3, 52, :_reduce_none,
-  1, 52, :_reduce_none,
+  3, 52, :_reduce_28,
+  1, 52, :_reduce_29,
   1, 51, :_reduce_none,
   1, 51, :_reduce_none,
   1, 50, :_reduce_32,
-  1, 50, :_reduce_none,
+  1, 50, :_reduce_33,
   1, 50, :_reduce_none,
   1, 50, :_reduce_none,
   2, 50, :_reduce_none,
@@ -418,9 +418,9 @@ racc_token_table = {
   TkDo => 27,
   End => 28,
   TkTimes => 29,
-  TkIf => 30,
-  TkThen => 31,
-  TkElse => 32,
+  Cond_If => 30,
+  Cond_Then => 31,
+  Cond_Else => 32,
   TkWhile => 33,
   TkFor => 34,
   TkFrom => 35,
@@ -430,7 +430,7 @@ racc_token_table = {
   TkFunc => 39,
   TkFunc => 40,
   TkFalse => 41,
-  Id => 42,
+  ID => 42,
   Digit => 43,
   "return" => 44 }
 
@@ -546,15 +546,35 @@ module_eval(<<'.,.,', 'retina_parser.y', 88)
   end
 .,.,
 
-# reduce 11 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 89)
+  def _reduce_11(val, _values, result)
+     result = Tipo.new(val[0],val[1],val[3]) 
+    result
+  end
+.,.,
 
-# reduce 12 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 90)
+  def _reduce_12(val, _values, result)
+     result = Identificador.new(val[0]) 
+    result
+  end
+.,.,
 
 # reduce 13 omitted
 
-# reduce 14 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 92)
+  def _reduce_14(val, _values, result)
+     result = If.new(val[1],val[3]) 
+    result
+  end
+.,.,
 
-# reduce 15 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 93)
+  def _reduce_15(val, _values, result)
+     result = If.new(val[1],val[3],val[5]) 
+    result
+  end
+.,.,
 
 # reduce 16 omitted
 
@@ -580,9 +600,19 @@ module_eval(<<'.,.,', 'retina_parser.y', 88)
 
 # reduce 27 omitted
 
-# reduce 28 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 110)
+  def _reduce_28(val, _values, result)
+     result = Identificador.new(val[2]) 
+    result
+  end
+.,.,
 
-# reduce 29 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 111)
+  def _reduce_29(val, _values, result)
+     result = Identificador.new(val[0]) 
+    result
+  end
+.,.,
 
 # reduce 30 omitted
 
@@ -595,7 +625,12 @@ module_eval(<<'.,.,', 'retina_parser.y', 118)
   end
 .,.,
 
-# reduce 33 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 119)
+  def _reduce_33(val, _values, result)
+     result = Identificador.new(val[0]) 
+    result
+  end
+.,.,
 
 # reduce 34 omitted
 

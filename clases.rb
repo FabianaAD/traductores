@@ -7,9 +7,9 @@ $tokens = {
 	With:								/\Awith\b/,
 	Do:									/\Ado\b/,
 	Times:							/\Atimes\b/,
-	If:									/\Aif\b/,
-	Then:								/\Athen\b/,
-	Else:								/\Aelse\b/,
+	Cond_If:						/\Aif\b/,
+	Cond_Then:					/\Athen\b/,
+	Cond_Else:					/\Aelse\b/,
 	While:							/\Awhile\b/,
 	For:								/\Afor\b/,
 	From:								/\Afrom\b/,
@@ -24,7 +24,7 @@ $tokens = {
 	Or:	 								/\Aor/,
 	Fraccion_Entera:		/\Adiv/,
 	Residuo_Entero:			/\Amod/,
-	Id:									/\A([a-z])(\w)*\b/,
+	ID:									/\A([a-z])(\w)*\b/,
 	Cadena:							/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
 	Comentario:					/\A#(\w)*\b/,
 	Asignacion:					/\A=/,
@@ -110,15 +110,15 @@ class End < Token; end
 class PuntoComa < Token; end
 class Pr_Number < Token; end
 class Pr_Boolean < Token; end
-class Id < Token; end
+class ID < Token; end
+class Cond_If < Token; end
+class Cond_Then < Token; end
+class Cond_Else < Token; end
 
 # Clases por arreglar
 class With < Token; end
 class Do < Token; end
 class Times < Token; end
-class If < Token; end
-class Then < Token; end
-class Else < Token; end
 class While < Token; end
 class For < Token; end
 class From < Token; end
