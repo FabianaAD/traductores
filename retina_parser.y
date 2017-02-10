@@ -4,7 +4,7 @@ class Parser
 		token
 			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<='
 			'number' 'boolean'
-			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'repeat' 'begin' 'func' 'true' 'false'
+			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false'
 			'id' 'num'
 
 		# Precedencias y asociatividades de los operadores
@@ -52,6 +52,7 @@ class Parser
 			'for'         'Cond_For'
 			'from'        'Cond_From'
 			'to'          'Cond_To'
+			'by'					'Cond_By'
 			'repeat'      'Cond_Repeat'
 			'times'       'Cond_Times'
 			'('           'Abre_Parentesis'
@@ -86,20 +87,24 @@ rule
 						| Arg ',' TipoVar  'id'
 						;
 
-		Bloque  : TipoVar  Id ';'																							{ result = Declaracion.new(val[0],val[1]) }
-						| TipoVar  'id' '=' Exp ';'																		{ result = Declaracion.new(val[0],val[1],val[3]) }
+		Bloque  : TipoVar  Id ';'																										{ result = Declaracion.new(val[0],val[1]) }
+						| TipoVar  'id' '=' Exp ';'																					{ result = Declaracion.new(val[0],val[1],val[3]) }
 						| 'id' '=' Exp ';'																						
 						| 'num' '=' Exp ';'
-						| 'if' Exp 'then' Bloque 'end' ';'														{ result = If.new(val[1],val[3]) }
-						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'							{ result = If.new(val[1],val[3],val[5]) }
-						| 'while' Exp 'do' Bloque 'end' ';'														{ result = While.new(val[1],val[3]) }
+						| 'if' Exp 'then' Bloque 'end' ';'																	{ result = If.new(val[1],val[3]) }
+						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'										{ result = If.new(val[1],val[3],val[5]) }
+						| 'while' Exp 'do' Bloque 'end' ';'																	{ result = While.new(val[1],val[3]) }
 						| 'with' TipoVar 'id' ';' 'do' Bloque 'end' ';'
-						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'		{ result = For.new(val[1],val[3],val[5],val[7]) }
-						| 'repeat' 'num' 'times' Bloque 'end' ';'											{ result = Repeat.new(val[1],val[3]) }
+						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'					{ result = For.new(val[1],val[3],val[5],val[7]) }
+						| 'for' 'id' 'from' 'num' 'to' 'num' 'by' Num 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
+						| 'repeat' 'num' 'times' Bloque 'end' ';'														{ result = Repeat.new(val[1],val[3]) }
 						| 'id' '(' ')' ';'
 						| 'id' '(' Attr ')' ';'
 						| Exp ';'
-						| Bloque Bloque
+						| Bloque Bloque																											{ result = Bloque_Cod.new(val[0],val[1]) }
+						;
+
+		Num			: 'num'							{ result = Numero.new(val[0]) }
 						;
 
 		Attr		: Exp
@@ -108,8 +113,7 @@ rule
 						| Attr ',' Id
 						;
 
-		Id      : Id ',' 'id'				{ result = Identificador.new(val[2]) }
-						| 'id'							{ result = Identificador.new(val[0]) }
+		Id      : 'id'							{ result = Identificador.new(val[0]) }
 						;
 
 		TipoVar : 'number'					{ result = Number.new() }

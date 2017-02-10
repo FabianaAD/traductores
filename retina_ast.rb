@@ -158,13 +158,20 @@ class While < AST
 end	
 
 class For < AST
-	attr_accessor :id, :from, :to, :bloque
+	attr_accessor :id, :from, :to, :by, :bloque
 
-	def initialize i,f,t,b
+	def initialize i,f,t,by,bl=nil
 		@id = Identificador.new(i)
 		@from = Numero.new(f)
 		@to = Numero.new(t)
-		@bloque = b
+		if bl != nil
+			puts "Si"
+			@by = by
+			@bloque = bl
+		else
+			@by = nil
+			@bloque = by
+		end
 	end
 
 	def print_ast indent=""
@@ -177,6 +184,11 @@ class For < AST
 
 		puts "#{indent}To:"
 		@to.print_ast indent + "  " if @to.respond_to? :print_ast
+
+		if @by != nil
+			puts "#{indent}By:"
+			@by.print_ast indent + "  " if @by.respond_to? :print_ast
+		end	
 
 		puts "#{indent}Bloque:"
 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
@@ -242,6 +254,7 @@ class CierraParentesis < Signo; end
 class Coma < Signo; end
 class True < Booleano; end
 class False < Booleano; end
+class Bloque_Cod < OperacionBinaria; end
 
 # Clases por arreglar
 class TkWith < PalabraReservada; end

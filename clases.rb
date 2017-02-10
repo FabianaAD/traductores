@@ -12,6 +12,7 @@ $tokens = {
 	Cond_For:						/\Afor\b/,
 	Cond_From:					/\Afrom\b/,
 	Cond_To:						/\Ato\b/,
+	Cond_By:						/\Aby\b/,
 	With:								/\Awith\b/,
 	Cond_Repeat:				/\Arepeat\b/,
 	Cond_Times:					/\Atimes\b/,
@@ -119,6 +120,7 @@ class Cond_Do < Token; end
 class Cond_For < Token; end
 class Cond_From < Token; end
 class Cond_To < Token; end
+class Cond_By < Token; end
 class Cond_Repeat < Token; end
 class Cond_Times < Token; end
 class Abre_Parentesis < Token; end
