@@ -77,29 +77,29 @@ rule
 						;
 
 		Funcion	: Funcion Funcion
-						| 'func' 'id' '(' Arg ')' 'begin' 'end' ';'
-						| 'func' 'id' '(' ')' 'begin' 'end' ';'
-						| 'func' 'id' '(' Arg ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
-						| 'func' 'id' '(' ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
+						| 'func' Id '(' Arg ')' 'begin' 'end' ';'
+						| 'func' Id '(' ')' 'begin' 'end' ';'
+						| 'func' Id '(' Arg ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
+						| 'func' Id '(' ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
 						;
 
-		Arg			: TipoVar  ',' 'id'
-						| Arg ',' TipoVar  'id'
+		Arg			: TipoVar  ',' Id
+						| Arg ',' TipoVar  Id
 						;
 
 		Bloque  : TipoVar  Id ';'																										{ result = Declaracion.new(val[0],val[1]) }
-						| TipoVar  'id' '=' Exp ';'																					{ result = Declaracion.new(val[0],val[1],val[3]) }
-						| 'id' '=' Exp ';'																						
+						| TipoVar  Id '=' Exp ';'																					{ result = Declaracion.new(val[0],val[1],val[3]) }
+						| Id '=' Exp ';'																						
 						| 'num' '=' Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'																	{ result = If.new(val[1],val[3]) }
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'										{ result = If.new(val[1],val[3],val[5]) }
 						| 'while' Exp 'do' Bloque 'end' ';'																	{ result = While.new(val[1],val[3]) }
-						| 'with' TipoVar 'id' ';' 'do' Bloque 'end' ';'
-						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'					{ result = For.new(val[1],val[3],val[5],val[7]) }
-						| 'for' 'id' 'from' 'num' 'to' 'num' 'by' Num 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
+						| 'with' TipoVar Id ';' 'do' Bloque 'end' ';'
+						| 'for' Id 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'					{ result = For.new(val[1],val[3],val[5],val[7]) }
+						| 'for' Id 'from' 'num' 'to' 'num' 'by' Num 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
 						| 'repeat' 'num' 'times' Bloque 'end' ';'														{ result = Repeat.new(val[1],val[3]) }
-						| 'id' '(' ')' ';'
-						| 'id' '(' Attr ')' ';'
+						| Id '(' ')' ';'
+						| Id '(' Attr ')' ';'
 						| Exp ';'
 						| Bloque Bloque																											{ result = Bloque_Cod.new(val[0],val[1]) }
 						;

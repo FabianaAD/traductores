@@ -27,17 +27,15 @@ class Numero < AST
 end
 
 class Identificador < AST
-	attr_accessor :id
+	attr_accessor :texto
 
-	def initialize i
-		@id = i
+	def initialize txt
+			@texto = txt.t
 	end
 
-'''
 	def print_ast indent=""
-		puts "#{indent}#{self.class}: #{@id}"
+			puts "#{indent}Identificador: #{@texto}"
 	end
-'''
 end
 
 class OperacionUnaria < AST
@@ -78,7 +76,7 @@ class Declaracion < AST
 	
 	def initialize n, i, v=nil
 		@nombre = n
-		@id = Identificador.new(i.t)
+		@id = i
 		@valor = v
 	end
 
@@ -219,7 +217,11 @@ class Booleano < AST
 	attr_accessor :nombre
 
 	def initialize n
-		@nombre = n
+		@nombre = n.t
+	end
+
+	def print_ast indent=""
+			puts "#{indent}Booleano: #{@nombre}"
 	end
 end	
 
