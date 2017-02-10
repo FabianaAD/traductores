@@ -2,7 +2,7 @@ class Parser
 
 		# Declaracion de Tokens
 		token
-			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<='
+			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS
 			'number' 'boolean'
 			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false'
 			'id' 'num'
@@ -121,10 +121,10 @@ rule
 						;
 
 		Exp     : 'num'							{ result = Numero.new(val[0]) }
-						| 'id'							{ result = Identificador.new(val[0]) }							
+						| Id								{ result = val[0] }							
 						| 'true'						{ result = Booleano.new(val[0]) }							
 						| 'false'						{ result = Booleano.new(val[0]) }							
-						| '-' Exp													
+						| '-' Exp = UMENOS	{ result = MenosUnario.new(val[1]) }												
 						| Exp '+' Exp				{ result = Suma.new(val[0],val[2]) }								
 						| Exp '-' Exp				{ result = Resta.new(val[0],val[2]) }							
 						| Exp '*' Exp				{ result = Multiplicacion.new(val[0],val[2]) }						

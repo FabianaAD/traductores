@@ -30,7 +30,7 @@ $tokens = {
 	Comentario:					/\A#(\w)*\b/,
 	Asignacion:					/\A=/,
 	Adicion:						/\A\+/,
-	Sustraccion:				/\A\-/,
+	Sustraccion:				/\A\-\b/,
 	Repeticion:					/\A\*/,
 	Fraccion_Exacta:		/\A\//,
 	Residuo_Exacto:			/\A%/,

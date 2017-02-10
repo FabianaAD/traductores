@@ -33,10 +33,11 @@ class Identificador < AST
 		@id = i
 	end
 
+'''
 	def print_ast indent=""
 		puts "#{indent}#{self.class}: #{@id}"
 	end
-
+'''
 end
 
 class OperacionUnaria < AST
@@ -255,6 +256,7 @@ class Coma < Signo; end
 class True < Booleano; end
 class False < Booleano; end
 class Bloque_Cod < OperacionBinaria; end
+class MenosUnario < OperacionUnaria; end
 
 # Clases por arreglar
 class TkWith < PalabraReservada; end
