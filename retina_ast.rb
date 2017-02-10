@@ -59,6 +59,16 @@ class PalabraReservada < AST
 	end
 end
 
+class Tipo < AST
+	attr_reader :nombre, :id, :valor
+	
+	def initialize nombre, id, valor=""
+		@nombre = nombre
+		@id = id
+		@valor = valor
+	end
+end
+
 class Texto < AST
 	attr_accessor :Texto
 
@@ -88,14 +98,14 @@ class Inequivalencia < OperacionBinaria; end
 class Inicio < PalabraReservada; end
 class Fin < PalabraReservada; end
 class Punto_Coma < Signo; end
-class Number < PalabraReservada; end
+class Number < Tipo; end
+class Boolean < Tipo; end
 class Identificador < Texto; end
 
 # Clases por arreglar
 class TkAbreParentesis < Signo; end
 class TkCierraParentesis < Signo; end
 class TkComa < Signo; end
-class TkBoolean < PalabraReservada; end
 class TkWith < PalabraReservada; end
 class TkDo < PalabraReservada; end
 class TkTimes < PalabraReservada; end

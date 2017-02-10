@@ -42,13 +42,13 @@ class Parser
 			'end'         'End'
 			';'           'PuntoComa'
 			'number'      'Pr_Number'
+			'boolean'     'Pr_Boolean'
 			'id'          'Id'
 			
 			# Tokens por arreglar
 			'('           'TkAbreParentesis'
 			')'           'TkCierraParentesis'
 			','           'TkComa'  
-			'boolean'     'TkBoolean'
 			'with'        'TkWith'
 			'do'          'TkDo'
 			'times'       'TkTimes'
@@ -82,12 +82,12 @@ rule
 						| 'func' 'id' '(' ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
 						;
 
-		Arg			: Tipo ',' 'id'
-						| Arg ',' Tipo 'id'
+		Arg			: TipoVar  ',' 'id'
+						| Arg ',' TipoVar  'id'
 						;
 
-		Bloque  : Tipo Id ';'																															
-						| Tipo 'id' '=' Exp ';'
+		Bloque  : TipoVar  Id ';'																							{ result = Tipo.new(val[0],val[1]) }
+						| TipoVar  'id' '=' Exp ';'																		
 						| 'id' '=' Exp ';'
 						| 'num' '=' Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'
@@ -112,7 +112,7 @@ rule
 						| 'id'
 						;
 
-		Tipo    : 'number'					
+		TipoVar : 'number'					
 						| 'boolean'
 						;
 

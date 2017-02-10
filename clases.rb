@@ -1,7 +1,7 @@
 $tokens = {
 	Digit:							/\A\d+/,
 	Pr_Number: 					/\Anumber\b/,
-	Boolean:						/\Aboolean\b/,
+	Pr_Boolean:					/\Aboolean\b/,
 	Program:						/\Aprogram\b/,
 	End:								/\Aend\b/,
 	With:								/\Awith\b/,
@@ -68,7 +68,6 @@ class LexicographicError < RuntimeError
 end
 
 class SyntacticError < RuntimeError
-
 		def initialize(tok)
 				@token = tok
 		end
@@ -110,10 +109,10 @@ class Program < Token; end
 class End < Token; end
 class PuntoComa < Token; end
 class Pr_Number < Token; end
+class Pr_Boolean < Token; end
 class Id < Token; end
 
 # Clases por arreglar
-class Boolean < Token; end
 class With < Token; end
 class Do < Token; end
 class Times < Token; end

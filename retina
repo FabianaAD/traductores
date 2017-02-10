@@ -22,6 +22,7 @@ def main
 	# Obtener tokens hasta que se termine el input
 	begin
 		while lexer.catch_lexeme; end
+		lexer.imprimir_tokens
 		begin
 			lexer = Lexer.new input
 			parser = Parser.new

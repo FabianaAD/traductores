@@ -338,7 +338,7 @@ racc_reduce_table = [
   12, 47, :_reduce_none,
   3, 49, :_reduce_none,
   4, 49, :_reduce_none,
-  3, 48, :_reduce_none,
+  3, 48, :_reduce_10,
   5, 48, :_reduce_none,
   4, 48, :_reduce_none,
   4, 48, :_reduce_none,
@@ -412,7 +412,7 @@ racc_token_table = {
   MayorIgual => 21,
   MenorIgual => 22,
   Pr_Number => 23,
-  TkBoolean => 24,
+  Pr_Boolean => 24,
   Program => 25,
   TkWith => 26,
   TkDo => 27,
@@ -506,7 +506,7 @@ Racc_token_to_s_table = [
   "Bloque",
   "Arg",
   "Exp",
-  "Tipo",
+  "TipoVar",
   "Id",
   "Attr" ]
 
@@ -539,7 +539,12 @@ module_eval(<<'.,.,', 'retina_parser.y', 74)
 
 # reduce 9 omitted
 
-# reduce 10 omitted
+module_eval(<<'.,.,', 'retina_parser.y', 88)
+  def _reduce_10(val, _values, result)
+     result = Tipo.new(val[0],val[1]) 
+    result
+  end
+.,.,
 
 # reduce 11 omitted
 
