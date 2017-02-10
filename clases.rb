@@ -17,14 +17,14 @@ $tokens = {
 	Cond_Times:					/\Atimes\b/,
 	Begin:							/\Abegin\b/,
 	Func:								/\Afunc\b/,
-	True:								/\Atrue\b/,
-	False:							/\Afalse\b/,
+	Bool_True:					/\Atrue\b/,
+	Bool_False:					/\Afalse\b/,
 	Not:								/\Anot/,
 	And:								/\Aand/,
 	Or:	 								/\Aor/,
 	Fraccion_Entera:		/\Adiv/,
 	Residuo_Entero:			/\Amod/,
-	ID:									/\A([a-z])(\w)*\b/,
+	Idtf:								/\A([a-z])(\w)*\b/,
 	Cadena:							/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
 	Comentario:					/\A#(\w)*\b/,
 	Asignacion:					/\A=/,
@@ -40,9 +40,9 @@ $tokens = {
 	Equivale:						/\A==\b/,
 	Inequivale:					/\A\/=\b/,
 	PuntoComa:					/\A;/,
-	AbreParentesis:			/\A\(/,
-	CierraParentesis:		/\A\)/,
-	Coma:								/\A,/
+	Abre_Parentesis:		/\A\(/,
+	Cierra_Parentesis:	/\A\)/,
+	Signo_Coma:					/\A,/
 }
 
 class Token
@@ -110,7 +110,7 @@ class End < Token; end
 class PuntoComa < Token; end
 class Pr_Number < Token; end
 class Pr_Boolean < Token; end
-class ID < Token; end
+class Idtf < Token; end
 class Cond_If < Token; end
 class Cond_Then < Token; end
 class Cond_Else < Token; end
@@ -121,15 +121,15 @@ class Cond_From < Token; end
 class Cond_To < Token; end
 class Cond_Repeat < Token; end
 class Cond_Times < Token; end
+class Abre_Parentesis < Token; end
+class Cierra_Parentesis < Token; end
+class Signo_Coma < Token; end
+class Bool_True < Token; end
+class Bool_False < Token; end
 
 # Clases por arreglar
 class With < Token; end
 class Begin < Token; end
 class Func < Token; end
-class True < Token; end
-class False < Token; end
 class Cadena < Token; end
 class Comentario < Token; end
-class AbreParentesis < Token; end
-class CierraParentesis < Token; end
-class Coma < Token; end

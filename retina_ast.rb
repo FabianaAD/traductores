@@ -26,6 +26,19 @@ class Numero < AST
 	end
 end
 
+class Identificador < AST
+	attr_accessor :id
+
+	def initialize i
+		@id = i
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}: #{@id}"
+	end
+
+end
+
 class OperacionUnaria < AST
 	attr_accessor :operando
 
@@ -59,25 +72,41 @@ class PalabraReservada < AST
 	end
 end
 
-class Tipo < AST
-	attr_reader :nombre, :id, :valor
+class Declaracion < AST
+	attr_accessor :nombre, :id, :valor
 	
 	def initialize n, i, v=nil
 		@nombre = n
-		@id = i
+		@id = Identificador.new(i.t)
 		@valor = v
-	end
-end
-
-class Identificador < AST
-	attr_accessor :id
-
-	def initialize i
-		@id = i
 	end
 
 	def print_ast indent=""
-		puts "#{indent}#{self.class}: #{@d}"
+		puts "#{indent}#{self.class}:"
+
+		indent += "  "
+
+		@nombre.print_ast indent if @nombre.respond_to? :print_ast
+
+		@id.print_ast indent if @id.respond_to? :print_ast
+
+		# Si hay dos bloques de instrucciones
+		if @valor != nil
+			puts "#{indent}Valor:"
+			@valor.print_ast indent + "  " if @valor.respond_to? :print_ast	
+		end
+	end
+end
+
+class Number < AST
+	def print_ast indent=""
+		puts "#{indent}Tipo: number"
+	end
+end
+
+class Boolean < AST
+	def print_ast indent=""
+		puts "#{indent}Tipo: boolean"
 	end
 end
 
@@ -151,7 +180,6 @@ class For < AST
 
 		puts "#{indent}Bloque:"
 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
-
 	end
 end
 
@@ -171,9 +199,16 @@ class Repeat < AST
 
 		puts "#{indent}Bloque:"
 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
-
 	end
 end
+
+class Booleano < AST
+	attr_accessor :nombre
+
+	def initialize n
+		@nombre = n
+	end
+end	
 
 # Clases arregladas
 class Igual < OperacionBinaria; end
@@ -196,21 +231,19 @@ class Inequivalencia < OperacionBinaria; end
 class Inicio < PalabraReservada; end
 class Fin < PalabraReservada; end
 class Punto_Coma < Signo; end
-class Number < Tipo; end
-class Boolean < Tipo; end
 class Then < PalabraReservada; end
 class Else < PalabraReservada; end
 class Do < PalabraReservada; end
 class From < PalabraReservada; end
 class To < PalabraReservada; end
 class Times < PalabraReservada; end
+class AbreParentesis < Signo; end
+class CierraParentesis < Signo; end
+class Coma < Signo; end
+class True < Booleano; end
+class False < Booleano; end
 
 # Clases por arreglar
-class TkAbreParentesis < Signo; end
-class TkCierraParentesis < Signo; end
-class TkComa < Signo; end
 class TkWith < PalabraReservada; end
 class TkBegin < PalabraReservada; end
 class TkFunc < PalabraReservada; end
-class TkTrue < PalabraReservada; end
-class TkFalse < PalabraReservada; end

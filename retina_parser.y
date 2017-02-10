@@ -43,7 +43,7 @@ class Parser
 			';'           'PuntoComa'
 			'number'      'Pr_Number'
 			'boolean'     'Pr_Boolean'
-			'id'          'ID'
+			'id'          'Idtf'
 			'if'          'Cond_If'
 			'then'        'Cond_Then'
 			'else'        'Cond_Else'
@@ -54,16 +54,16 @@ class Parser
 			'to'          'Cond_To'
 			'repeat'      'Cond_Repeat'
 			'times'       'Cond_Times'
+			'('           'Abre_Parentesis'
+			')'           'Cierra_Parentesis'
+			','           'Signo_Coma'  
+			'true'        'Bool_True'
+			'false'       'Bool_False'
 			
 			# Tokens por arreglar
-			'('           'TkAbreParentesis'
-			')'           'TkCierraParentesis'
-			','           'TkComa'  
 			'with'        'TkWith'
 			'begin'       'TkBegin'
 			'func'        'TkFunc'
-			'true'        'TkFunc'
-			'false'       'TkFalse'
 end
 
 # Creacion de la gramatica
@@ -86,14 +86,14 @@ rule
 						| Arg ',' TipoVar  'id'
 						;
 
-		Bloque  : TipoVar  Id ';'																							{ result = Tipo.new(val[0],val[1]) }
-						| TipoVar  'id' '=' Exp ';'																		{ result = Tipo.new(val[0],val[1],val[3]) }
-						| 'id' '=' Exp ';'																						{ result = Identificador.new(val[0]) }
+		Bloque  : TipoVar  Id ';'																							{ result = Declaracion.new(val[0],val[1]) }
+						| TipoVar  'id' '=' Exp ';'																		{ result = Declaracion.new(val[0],val[1],val[3]) }
+						| 'id' '=' Exp ';'																						
 						| 'num' '=' Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'														{ result = If.new(val[1],val[3]) }
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'							{ result = If.new(val[1],val[3],val[5]) }
 						| 'while' Exp 'do' Bloque 'end' ';'														{ result = While.new(val[1],val[3]) }
-						| 'with' 'number' 'id' ';' 'do' Bloque 'end' ';'
+						| 'with' TipoVar 'id' ';' 'do' Bloque 'end' ';'
 						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'		{ result = For.new(val[1],val[3],val[5],val[7]) }
 						| 'repeat' 'num' 'times' Bloque 'end' ';'											{ result = Repeat.new(val[1],val[3]) }
 						| 'id' '(' ')' ';'
@@ -112,14 +112,14 @@ rule
 						| 'id'							{ result = Identificador.new(val[0]) }
 						;
 
-		TipoVar : 'number'					
-						| 'boolean'
+		TipoVar : 'number'					{ result = Number.new() }
+						| 'boolean'					{ result = Boolean.new() }
 						;
 
 		Exp     : 'num'							{ result = Numero.new(val[0]) }
 						| 'id'							{ result = Identificador.new(val[0]) }							
-						| 'true'													
-						| 'false'													
+						| 'true'						{ result = Booleano.new(val[0]) }							
+						| 'false'						{ result = Booleano.new(val[0]) }							
 						| '-' Exp													
 						| Exp '+' Exp				{ result = Suma.new(val[0],val[2]) }								
 						| Exp '-' Exp				{ result = Resta.new(val[0],val[2]) }							

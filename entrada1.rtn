@@ -1,3 +1,4 @@
 program
-	repeat 4 times 4*4; end;
+	boolean identificando = true;
+	4 + 4;
 end;
