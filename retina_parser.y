@@ -47,15 +47,15 @@ class Parser
 			'if'          'Cond_If'
 			'then'        'Cond_Then'
 			'else'        'Cond_Else'
+			'while'       'Cond_While'
+			'do'          'Cond_Do'
 			
 			# Tokens por arreglar
 			'('           'TkAbreParentesis'
 			')'           'TkCierraParentesis'
 			','           'TkComa'  
 			'with'        'TkWith'
-			'do'          'TkDo'
 			'times'       'TkTimes'
-			'while'       'TkWhile'
 			'for'         'TkFor'
 			'from'        'TkFrom'
 			'to'          'TkTo'
@@ -92,7 +92,7 @@ rule
 						| 'num' '=' Exp ';'
 						| 'if' Exp 'then' Bloque 'end' ';'														{ result = If.new(val[1],val[3]) }
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'							{ result = If.new(val[1],val[3],val[5]) }
-						| 'while' Exp 'do' Bloque 'end' ';'
+						| 'while' Exp 'do' Bloque 'end' ';'														{ result = While.new(val[1],val[3]) }
 						| 'with' 'number' 'id' ';' 'do' Bloque 'end' ';'
 						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'
 						| 'repeat' 'num' 'times' Bloque 'end' ';'

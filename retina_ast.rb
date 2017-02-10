@@ -108,6 +108,26 @@ class NodoIf < AST
 	end
 end	
 
+class NodoWhile < AST
+	attr_accessor :cond, :inst
+
+	def initialize c, i
+		@cond = c
+		@inst = i
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		indent += "  "
+		puts "#{indent}Condicion:"
+		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
+
+		puts "#{indent}Bloque:"
+		@inst.print_ast indent + "  " if @inst.respond_to? :print_ast
+	end
+end	
+
 # Clases arregladas
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
@@ -135,15 +155,15 @@ class Identificador < Id; end
 class If < NodoIf; end
 class Then < PalabraReservada; end
 class Else < PalabraReservada; end
+class While < NodoWhile; end
+class Do < PalabraReservada; end
 
 # Clases por arreglar
 class TkAbreParentesis < Signo; end
 class TkCierraParentesis < Signo; end
 class TkComa < Signo; end
 class TkWith < PalabraReservada; end
-class TkDo < PalabraReservada; end
 class TkTimes < PalabraReservada; end
-class TkWhile < PalabraReservada; end
 class TkFor < PalabraReservada; end
 class TkFrom < PalabraReservada; end
 class TkTo < PalabraReservada; end

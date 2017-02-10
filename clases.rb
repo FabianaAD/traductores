@@ -5,12 +5,12 @@ $tokens = {
 	Program:						/\Aprogram\b/,
 	End:								/\Aend\b/,
 	With:								/\Awith\b/,
-	Do:									/\Ado\b/,
 	Times:							/\Atimes\b/,
 	Cond_If:						/\Aif\b/,
 	Cond_Then:					/\Athen\b/,
 	Cond_Else:					/\Aelse\b/,
-	While:							/\Awhile\b/,
+	Cond_While:					/\Awhile\b/,
+	Cond_Do:						/\Ado\b/,
 	For:								/\Afor\b/,
 	From:								/\Afrom\b/,
 	To:									/\Ato\b/,
@@ -114,12 +114,12 @@ class ID < Token; end
 class Cond_If < Token; end
 class Cond_Then < Token; end
 class Cond_Else < Token; end
+class Cond_While < Token; end
+class Cond_Do < Token; end
 
 # Clases por arreglar
 class With < Token; end
-class Do < Token; end
 class Times < Token; end
-class While < Token; end
 class For < Token; end
 class From < Token; end
 class To < Token; end
