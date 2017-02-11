@@ -10,5 +10,6 @@ begin
 end;
 
 program
-	boolean myb = true;
+	myfunc( i , j);
+	5 + 5;
 end;

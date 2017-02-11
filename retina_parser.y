@@ -97,16 +97,14 @@ rule
 						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'						{ result = For.new(val[1],val[3],val[5],val[7]) }
 						| 'for' 'id' 'from' 'num' 'to' 'num' 'by' 'num' 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
 						| 'repeat' 'num' 'times' Bloque 'end' ';'															{ result = Repeat.new(val[1],val[3]) }
-						| Id '(' ')' ';'
-						| Id '(' Attr ')' ';'
+						| Id '(' ')' ';'																											{ result = Llamada.new(val[0])}
+						| Id '(' Par ')' ';'																									{ result = Llamada.new(val[0],val[2])}
 						| Exp ';'
 						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
 						;
 
-		Attr		: Exp
-						| Id
-						| Attr ',' Exp
-						| Attr ',' Id
+		Par			: 'id'							{ result = Identificador.new(val[0]) }
+						| Par ',' Par				{ result = Multiple_Par.new(val[0],val[2])}
 						;
 
 		Id      : 'id'							{ result = Identificador.new(val[0]) }

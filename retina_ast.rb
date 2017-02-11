@@ -321,7 +321,36 @@ class Multiple_Prog < OperacionBinaria
 	end
 end
 
-# Clases arregladas
+class Multiple_Par < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
+class Llamada < AST
+	attr_accessor :id, :par
+
+	def initialize i,a=nil
+		@id = i
+		@par = a
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class} a funcion:"
+
+		indent += "  "
+
+		@id.print_ast indent + "  " if @id.respond_to? :print_ast
+
+		if @par != nil
+			puts "#{indent}Parametros:"
+			@par.print_ast indent + "  " if @par.respond_to? :print_ast
+		end
+	end
+end	
+
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
 class Resta < OperacionBinaria; end
