@@ -2,7 +2,7 @@ class Parser
 
 		# Declaracion de Tokens
 		token
-			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS
+			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS '->'
 			'number' 'boolean'
 			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false'
 			'id' 'num'
@@ -61,10 +61,10 @@ class Parser
 			'true'        'Bool_True'
 			'false'       'Bool_False'
 			'with'        'Cond_With'
-			
-			# Tokens por arreglar
-			'begin'       'TkBegin'
-			'func'        'TkFunc'
+			'func'        'Func'
+			'begin'       'Pr_Begin'
+			'return'			'Pr_Return'
+			'->'					'Flecha'
 end
 
 # Creacion de la gramatica
@@ -72,19 +72,19 @@ start Inicio
 
 rule
 		
-		Inicio  : Funcion 'program' Bloque 'end' ';'
-						| 'program' Bloque 'end' ';'																	{ result = Inicio.new(val[1]) }
+		Inicio  : Funcion 'program' Bloque 'end' ';'		{ result = Multiple_Prog.new(val[0],Inicio.new(val[2])) }
+						| 'program' Bloque 'end' ';'						{ result = Inicio.new(val[1]) }
 						;
 
-		Funcion	: Funcion Funcion
-						| 'func' Id '(' Arg ')' 'begin' 'end' ';'
-						| 'func' Id '(' ')' 'begin' 'end' ';'
-						| 'func' Id '(' Arg ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
-						| 'func' Id '(' ')' '-' '>' 'begin' 'return' Exp ';' 'end' ';'
+		Funcion	: Funcion Funcion																													{ result = Multiple_Func.new(val[0],val[1]) }
+						| 'func' Id '(' Arg ')' 'begin' Bloque 'end' ';'													{ result = Funcion.new(val[1],val[3],val[6]) }
+						| 'func' Id '(' ')' 'begin' Bloque 'end' ';'															{ result = Funcion.new(val[1],val[5]) }
+						| 'func' Id '(' Arg ')' '->' TipoVar 'begin' Bloque 'return' Exp ';' 'end' ';'		{ result = Funcion.new(val[1],val[3],val[8],val[6],val[10]) }
+						| 'func' Id '(' ')' '->' TipoVar 'begin' Bloque 'return' Exp ';' 'end' ';'				{ result = Funcion.new(val[1],nil,val[7],val[5],val[9]) }
 						;
 
-		Arg			: TipoVar  ',' Id
-						| Arg ',' TipoVar  Id
+		Arg			: TipoVar Id							{ result = Declaracion.new(val[0],val[1]) }
+						| Arg ',' TipoVar  Id			{ result = Multiple_Arg.new(val[0],Declaracion.new(val[2],val[3]))}
 						;
 
 		Bloque  : Decl																										

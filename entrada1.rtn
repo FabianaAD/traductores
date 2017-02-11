@@ -1,3 +1,14 @@
+func myfunc (number i, boolean mybool)
+begin
+	number j;
+end;
+
+func dafasfd () -> number
+begin
+	number j;
+	return 4 * 4;
+end;
+
 program
 	boolean myb = true;
 end;

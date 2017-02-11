@@ -261,6 +261,66 @@ class Multiple < OperacionBinaria
 	end
 end
 
+class Multiple_Func < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
+class Funcion < AST
+	attr_accessor :id, :arg, :tipo, :bloque, :ret
+
+	def initialize i,a,b,t=nil,r=nil
+		@id = i
+		@arg = a
+		@tipo = t
+		@bloque = b
+		@ret = r
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		indent += "  "
+
+		@id.print_ast indent if @id.respond_to? :print_ast
+
+		if @arg != nil	
+			@arg.print_ast indent if @arg.respond_to? :print_ast
+		end
+
+		if @tipo != nil	
+			@tipo.print_ast indent if @tipo.respond_to? :print_ast
+		end
+
+		puts "#{indent}Bloque:"
+		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+
+		if @ret != nil
+			puts "#{indent}Retorno:"
+			@ret.print_ast indent + "  " if @ret.respond_to? :print_ast
+		end
+	end
+end	
+
+class Multiple_Arg < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
+class Multiple_Prog < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
 # Clases arregladas
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
@@ -294,8 +354,6 @@ class Coma < Signo; end
 class True < Booleano; end
 class False < Booleano; end
 class MenosUnario < OperacionUnaria; end
-
-# Clases por arreglar
-class TkWith < PalabraReservada; end
-class TkBegin < PalabraReservada; end
-class TkFunc < PalabraReservada; end
+class Begin < PalabraReservada; end
+class Flecha_Arg < Signo; end
+class Return < PalabraReservada; end

@@ -16,8 +16,9 @@ $tokens = {
 	Cond_With:					/\Awith\b/,
 	Cond_Repeat:				/\Arepeat\b/,
 	Cond_Times:					/\Atimes\b/,
-	Begin:							/\Abegin\b/,
 	Func:								/\Afunc\b/,
+	Pr_Begin:						/\Abegin\b/,
+	Pr_Return:					/\Areturn\b/,
 	Bool_True:					/\Atrue\b/,
 	Bool_False:					/\Afalse\b/,
 	Not:								/\Anot/,
@@ -43,7 +44,8 @@ $tokens = {
 	PuntoComa:					/\A;/,
 	Abre_Parentesis:		/\A\(/,
 	Cierra_Parentesis:	/\A\)/,
-	Signo_Coma:					/\A,/
+	Signo_Coma:					/\A,/,
+	Flecha:							/\A\->/
 }
 
 class Token
@@ -129,9 +131,11 @@ class Signo_Coma < Token; end
 class Bool_True < Token; end
 class Bool_False < Token; end
 class Cond_With < Token; end
+class Func < Token; end
+class Pr_Begin < Token; end
+class Flecha < Token; end
+class Pr_Return < Token; end
 
 # Clases por arreglar
-class Begin < Token; end
-class Func < Token; end
 class Cadena < Token; end
 class Comentario < Token; end
