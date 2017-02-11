@@ -4,7 +4,7 @@ class Parser
 		token
 			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS '->'
 			'number' 'boolean'
-			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false'
+			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false' 'read'
 			'id' 'num'
 
 		# Precedencias y asociatividades de los operadores
@@ -65,6 +65,7 @@ class Parser
 			'begin'       'Pr_Begin'
 			'return'			'Pr_Return'
 			'->'					'Flecha'
+			'read'				'Pr_Read'
 end
 
 # Creacion de la gramatica
@@ -100,6 +101,7 @@ rule
 						| Id '(' ')' ';'																											{ result = Llamada.new(val[0])}
 						| Id '(' Par ')' ';'																									{ result = Llamada.new(val[0],val[2])}
 						| Exp ';'
+						| 'read' Id ';'																											{ result = Read.new(val[1]) }
 						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
 						;
 

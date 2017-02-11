@@ -19,6 +19,7 @@ $tokens = {
 	Func:								/\Afunc\b/,
 	Pr_Begin:						/\Abegin\b/,
 	Pr_Return:					/\Areturn\b/,
+	Pr_Read:					/\Aread\b/,
 	Bool_True:					/\Atrue\b/,
 	Bool_False:					/\Afalse\b/,
 	Not:								/\Anot/,
@@ -135,6 +136,7 @@ class Func < Token; end
 class Pr_Begin < Token; end
 class Flecha < Token; end
 class Pr_Return < Token; end
+class Pr_Read < Token; end
 
 # Clases por arreglar
 class Cadena < Token; end

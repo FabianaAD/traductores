@@ -10,6 +10,7 @@ begin
 end;
 
 program
-	myfunc( i , j);
+	myfunc();
 	5 + 5;
+	read i;
 end;

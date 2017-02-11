@@ -386,3 +386,4 @@ class MenosUnario < OperacionUnaria; end
 class Begin < PalabraReservada; end
 class Flecha_Arg < Signo; end
 class Return < PalabraReservada; end
+class Read < OperacionUnaria; end
