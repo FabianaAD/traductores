@@ -13,7 +13,7 @@ $tokens = {
 	Cond_From:					/\Afrom\b/,
 	Cond_To:						/\Ato\b/,
 	Cond_By:						/\Aby\b/,
-	With:								/\Awith\b/,
+	Cond_With:					/\Awith\b/,
 	Cond_Repeat:				/\Arepeat\b/,
 	Cond_Times:					/\Atimes\b/,
 	Begin:							/\Abegin\b/,
@@ -128,9 +128,9 @@ class Cierra_Parentesis < Token; end
 class Signo_Coma < Token; end
 class Bool_True < Token; end
 class Bool_False < Token; end
+class Cond_With < Token; end
 
 # Clases por arreglar
-class With < Token; end
 class Begin < Token; end
 class Func < Token; end
 class Cadena < Token; end

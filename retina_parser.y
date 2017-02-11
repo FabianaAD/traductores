@@ -60,9 +60,9 @@ class Parser
 			','           'Signo_Coma'  
 			'true'        'Bool_True'
 			'false'       'Bool_False'
+			'with'        'Cond_With'
 			
 			# Tokens por arreglar
-			'with'        'TkWith'
 			'begin'       'TkBegin'
 			'func'        'TkFunc'
 end
@@ -87,24 +87,20 @@ rule
 						| Arg ',' TipoVar  Id
 						;
 
-		Bloque  : TipoVar  Id ';'																										{ result = Declaracion.new(val[0],val[1]) }
-						| TipoVar  Id '=' Exp ';'																					{ result = Declaracion.new(val[0],val[1],val[3]) }
-						| Id '=' Exp ';'																						
-						| 'num' '=' Exp ';'
-						| 'if' Exp 'then' Bloque 'end' ';'																	{ result = If.new(val[1],val[3]) }
-						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'										{ result = If.new(val[1],val[3],val[5]) }
-						| 'while' Exp 'do' Bloque 'end' ';'																	{ result = While.new(val[1],val[3]) }
-						| 'with' TipoVar Id ';' 'do' Bloque 'end' ';'
-						| 'for' Id 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'					{ result = For.new(val[1],val[3],val[5],val[7]) }
-						| 'for' Id 'from' 'num' 'to' 'num' 'by' Num 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
-						| 'repeat' 'num' 'times' Bloque 'end' ';'														{ result = Repeat.new(val[1],val[3]) }
+		Bloque  : Decl																										
+						| TipoVar  Id '=' Exp ';'																							{ result = Declaracion.new(val[0],val[1],val[3]) }
+						| Id '=' Exp ';'																											{ result = Igual.new(val[0],val[2]) }
+						| 'if' Exp 'then' Bloque 'end' ';'																		{ result = If.new(val[1],val[3]) }
+						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'											{ result = If.new(val[1],val[3],val[5]) }
+						| 'while' Exp 'do' Bloque 'end' ';'																		{ result = While.new(val[1],val[3]) }
+						| 'with' Decl 'do' Bloque 'end' ';'																		{ result = With.new(val[1],val[3])}
+						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'						{ result = For.new(val[1],val[3],val[5],val[7]) }
+						| 'for' 'id' 'from' 'num' 'to' 'num' 'by' 'num' 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
+						| 'repeat' 'num' 'times' Bloque 'end' ';'															{ result = Repeat.new(val[1],val[3]) }
 						| Id '(' ')' ';'
 						| Id '(' Attr ')' ';'
 						| Exp ';'
-						| Bloque Bloque																											{ result = Bloque_Cod.new(val[0],val[1]) }
-						;
-
-		Num			: 'num'							{ result = Numero.new(val[0]) }
+						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
 						;
 
 		Attr		: Exp
@@ -114,6 +110,10 @@ rule
 						;
 
 		Id      : 'id'							{ result = Identificador.new(val[0]) }
+						;
+
+		Decl		: TipoVar  Id ';'		{ result = Declaracion.new(val[0],val[1]) }
+						| Decl Decl					{ result = Multiple.new(val[0],val[1]) }
 						;
 
 		TipoVar : 'number'					{ result = Number.new() }

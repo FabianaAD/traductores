@@ -164,12 +164,12 @@ class For < AST
 		@from = Numero.new(f)
 		@to = Numero.new(t)
 		if bl != nil
-			puts "Si"
-			@by = by
+			@by = Numero.new(by)
 			@bloque = bl
+			puts "#{bl}"
 		else
 			@by = nil
-			@bloque = by
+			@bloque = Bloque_Cod.new(by,nil)
 		end
 	end
 
@@ -225,6 +225,42 @@ class Booleano < AST
 	end
 end	
 
+class With < AST
+	attr_accessor :decl, :bloque
+
+	def initialize d,b
+		@decl = d
+		@bloque = b
+	end
+
+	def print_ast indent=""
+		puts "#{indent}#{self.class}:"
+
+		indent += "  "
+
+		@decl.print_ast indent if @decl.respond_to? :print_ast
+
+		puts "#{indent}Bloque:"
+		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+	end
+end	
+
+class Bloque_Cod < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
+class Multiple < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
+end
+
 # Clases arregladas
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
@@ -257,7 +293,6 @@ class CierraParentesis < Signo; end
 class Coma < Signo; end
 class True < Booleano; end
 class False < Booleano; end
-class Bloque_Cod < OperacionBinaria; end
 class MenosUnario < OperacionUnaria; end
 
 # Clases por arreglar
