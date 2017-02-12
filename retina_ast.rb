@@ -22,7 +22,7 @@ class Numero < AST
 	end
 
 	def print_ast indent=""
-		puts "#{indent}#{self.class}: #{@digito.to_i}"
+		puts "#{indent}#{self.class}: #{@digito.t}"
 	end
 end
 

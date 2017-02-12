@@ -21,6 +21,7 @@ class Lexer
 			if @input =~ v
 				# Taking advantage with the reflexivity and introspection of the
 				# language is nice
+				puts v
 				class_to_be_instanciated = Object::const_get(k)
 				break
 			end

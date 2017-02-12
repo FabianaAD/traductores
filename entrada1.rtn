@@ -10,6 +10,8 @@ begin
 end;
 
 program
-	"lalalalala" ;
-	"cadena con espacios" ;
+	write i,i,"cadena 1";
+	writeln j,j,"Cadena 2";
+	"3 cadena";
+	3+2.4;
 end;

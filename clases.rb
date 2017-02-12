@@ -1,5 +1,5 @@
 $tokens = {
-	Digit:							/\A\d+/,
+	Digit:							/\A\d+(\.\d+)?\b/,
 	Pr_Number: 					/\Anumber\b/,
 	Pr_Boolean:					/\Aboolean\b/,
 	Program:						/\Aprogram\b/,
@@ -30,7 +30,7 @@ $tokens = {
 	Fraccion_Entera:		/\Adiv/,
 	Residuo_Entero:			/\Amod/,
 	Idtf:								/\A([a-z])(\w)*\b/,
-	Str:								/\A"([a-z])[\w|\s]*"/,
+	Str:								/\A"([a-z | A-Z | 0-9])[\w|\s]*"/,
 	Comentario:					/\A#(\w)*\b/,
 	Adicion:						/\A\+/,
 	Sustraccion:				/\A\-\b/,
