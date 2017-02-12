@@ -17,7 +17,7 @@ class SyntacticError < RuntimeError
     end
 
     def to_s
-        "Error de sintaxis en: #{@token}"   
+        "linea #{@token.lin}, columna #{@token.col}: token inesperado: #{@token.class}: #{@token.t}"   
     end
 end
 

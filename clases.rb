@@ -31,7 +31,7 @@ $tokens = {
 	Residuo_Entero:			/\Amod/,
 	Idtf:								/\A([a-z])(\w)*\b/,
 	Str:								/\A"([a-z | A-Z | 0-9])[\w|\s]*"/,
-	Comentario:					/\A#(\w)*\b/,
+	Comentario:					/\A#[\w|\s]*\n/,
 	Adicion:						/\A\+/,
 	Sustraccion:				/\A\-\b/,
 	Repeticion:					/\A\*/,
@@ -52,14 +52,16 @@ $tokens = {
 }
 
 class Token
-	attr_reader :t
+	attr_reader :t, :lin, :col
 	
-	def initialize text
+	def initialize text, lin, col
 		@t = text
+		@lin = lin
+		@col = col
 	end
 
 	def to_s
-		"Tk#{self.class}"
+	    "linea #{lin}, columna #{col}: Tk#{self.class} '#{t}'"
 	end
 end
 
@@ -142,3 +144,4 @@ class Pr_Read < Token; end
 class Pr_Write < Token; end
 class Str < Token; end
 class Pr_Writeln < Token; end
+class Comentario < Token; end

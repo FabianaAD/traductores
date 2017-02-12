@@ -10,8 +10,5 @@ begin
 end;
 
 program
-	write i,i,"cadena 1";
-	writeln j,j,"Cadena 2";
-	"3 cadena";
-	3+2.4;
+4+4;
 end;
