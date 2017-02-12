@@ -2,9 +2,9 @@ class Parser
 
 		# Declaracion de Tokens
 		token
-			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS '->'
+			'=' ';' '(' ')' 'div' 'mod' '-' '%' '+' '*' '/' ',' 'and' 'not' 'or' '>' '<' '==' '/=' '>=' '<=' UMENOS '->' 'str'
 			'number' 'boolean'
-			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false' 'read'
+			'program' 'with' 'do' 'end' 'times' 'if' 'then' 'else' 'while' 'for' 'from' 'to' 'by' 'repeat' 'begin' 'func' 'true' 'false' 'read' 'write' 'writeln'
 			'id' 'num'
 
 		# Precedencias y asociatividades de los operadores
@@ -66,6 +66,9 @@ class Parser
 			'return'			'Pr_Return'
 			'->'					'Flecha'
 			'read'				'Pr_Read'
+			'write'				'Pr_Write'
+			'str'					'Str'
+			'writeln'			'Pr_Writeln'
 end
 
 # Creacion de la gramatica
@@ -101,8 +104,16 @@ rule
 						| Id '(' ')' ';'																											{ result = Llamada.new(val[0])}
 						| Id '(' Par ')' ';'																									{ result = Llamada.new(val[0],val[2])}
 						| Exp ';'
-						| 'read' Id ';'																											{ result = Read.new(val[1]) }
+						| 'read' Id ';'																												{ result = Read.new(val[1]) }
+						| 'write' Imp	';'																											{ result = Write.new(val[1]) }
+						| 'writeln' Imp ';'																										{ result = Writeln.new(val[1]) }
+						| 'str' ';'																														{ result = Cadena.new(val[0]) }
 						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
+						;
+
+		Imp			: Exp
+						| 'str'							{ result = Cadena.new(val[0]) }
+						| Imp ',' Imp				{ result = Multiple_Imp.new(val[0],val[2]) }
 						;
 
 		Par			: 'id'							{ result = Identificador.new(val[0]) }
@@ -140,7 +151,7 @@ rule
 						| Exp '>=' Exp			{ result = Mayor_Igual.new(val[0],val[2]) }							
 						| Exp '<=' Exp			{ result = Menor_Igual.new(val[0],val[2]) }																	
 						| Exp '==' Exp			{ result = Equivalencia.new(val[0],val[2]) }							
-						| Exp '/''=' Exp		{ result = Inequivalencia.new(val[0],val[2]) }							
+						| Exp '/=' Exp			{ result = Inequivalencia.new(val[0],val[2]) }							
 						| '(' Exp ')'								
 						;
 

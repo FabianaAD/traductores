@@ -13,4 +13,12 @@ program
 	myfunc();
 	5 + 5;
 	read i;
+	write i,i,"Cadena con espacios";
+	writeln j,j;
+	4>3;
+	6>=5;
+	4/3;
+	6/=5;
+	id=3;
+	4==3;
 end;

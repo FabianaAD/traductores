@@ -19,7 +19,9 @@ $tokens = {
 	Func:								/\Afunc\b/,
 	Pr_Begin:						/\Abegin\b/,
 	Pr_Return:					/\Areturn\b/,
-	Pr_Read:					/\Aread\b/,
+	Pr_Read:						/\Aread\b/,
+	Pr_Write:						/\Awrite\b/,
+	Pr_Writeln:					/\Awriteln\b/,
 	Bool_True:					/\Atrue\b/,
 	Bool_False:					/\Afalse\b/,
 	Not:								/\Anot/,
@@ -28,20 +30,20 @@ $tokens = {
 	Fraccion_Entera:		/\Adiv/,
 	Residuo_Entero:			/\Amod/,
 	Idtf:								/\A([a-z])(\w)*\b/,
-	Cadena:							/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
+	Str:								/\A("(.|\s)*[^\\,\n]?")|\A"[^"]*\n/,
 	Comentario:					/\A#(\w)*\b/,
-	Asignacion:					/\A=/,
 	Adicion:						/\A\+/,
 	Sustraccion:				/\A\-\b/,
 	Repeticion:					/\A\*/,
-	Fraccion_Exacta:		/\A\//,
 	Residuo_Exacto:			/\A%/,
-	MayorEstricto:			/\A>/,
-	MenorEstricto:			/\A</,
 	MayorIgual:					/\A>=\b/,
 	MenorIgual:					/\A<=\b/,
+	MayorEstricto:			/\A>/,
+	MenorEstricto:			/\A</,
 	Equivale:						/\A==\b/,
+	Asignacion:					/\A=/,
 	Inequivale:					/\A\/=\b/,
+	Fraccion_Exacta:		/\A\//,
 	PuntoComa:					/\A;/,
 	Abre_Parentesis:		/\A\(/,
 	Cierra_Parentesis:	/\A\)/,
@@ -137,7 +139,6 @@ class Pr_Begin < Token; end
 class Flecha < Token; end
 class Pr_Return < Token; end
 class Pr_Read < Token; end
-
-# Clases por arreglar
-class Cadena < Token; end
-class Comentario < Token; end
+class Pr_Write < Token; end
+class Str < Token; end
+class Pr_Writeln < Token; end

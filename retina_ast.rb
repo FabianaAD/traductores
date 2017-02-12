@@ -349,7 +349,27 @@ class Llamada < AST
 			@par.print_ast indent + "  " if @par.respond_to? :print_ast
 		end
 	end
+end
+
+class Multiple_Imp < OperacionBinaria
+	def print_ast indent=""
+		attrs.each do |a|
+			a.print_ast indent if a.respond_to? :print_ast
+		end
+	end
 end	
+
+class Cadena < AST
+	attr_accessor :texto
+
+	def initialize txt
+			@texto = txt.t
+	end
+
+	def print_ast indent=""
+			puts "#{indent}Cadena: #{@texto}"
+	end
+end
 
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end
@@ -387,3 +407,5 @@ class Begin < PalabraReservada; end
 class Flecha_Arg < Signo; end
 class Return < PalabraReservada; end
 class Read < OperacionUnaria; end
+class Write < OperacionUnaria; end
+class Writeln < OperacionUnaria; end
