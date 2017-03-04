@@ -8,6 +8,6 @@ end;
 program
 	for i from 1 to 360 do
 		incremental_forward(i);
-		rotater(15);
+		rotater(true);
 	end;
 end;

@@ -98,8 +98,8 @@ rule
 						| 'if' Exp 'then' Bloque 'else' Bloque 'end' ';'											{ result = If.new(val[1],val[3],val[5]) }
 						| 'while' Exp 'do' Bloque 'end' ';'																		{ result = While.new(val[1],val[3]) }
 						| 'with' Decl 'do' Bloque 'end' ';'																		{ result = With.new(val[1],val[3])}
-						| 'for' 'id' 'from' 'num' 'to' 'num' 'do' Bloque 'end' ';'						{ result = For.new(val[1],val[3],val[5],val[7]) }
-						| 'for' 'id' 'from' 'num' 'to' 'num' 'by' 'num' 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
+						| 'for' 'id' 'from' 'num' 'to' Limite 'do' Bloque 'end' ';'						{ result = For.new(val[1],val[3],val[5],val[7]) }
+						| 'for' 'id' 'from' 'num' 'to' Limite 'by' 'num' 'do' Bloque 'end' ';'	{ result = For.new(val[1],val[3],val[5],val[7],val[11]) }
 						| 'repeat' 'num' 'times' Bloque 'end' ';'															{ result = Repeat.new(val[1],val[3]) }
 						| Id '(' ')' ';'																											{ result = Llamada.new(val[0])}
 						| Id '(' Par ')' ';'																									{ result = Llamada.new(val[0],val[2])}
@@ -110,12 +110,18 @@ rule
 						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
 						;
 
+		Limite	:	'num'							{ result = Numero.new(val[0]) }
+						| 'id'							{ result = Identificador.new(val[0]) }
+
 		Imp			: Exp
 						| 'str'							{ result = Cadena.new(val[0]) }
 						| Imp ',' Imp				{ result = Multiple_Imp.new(val[0],val[2]) }
 						;
 
 		Par			: 'id'							{ result = Identificador.new(val[0]) }
+						| 'num'							{ result = Numero.new(val[0]) }
+						| 'true'						{ result = Booleano.new(val[0]) }							
+						| 'false'						{ result = Booleano.new(val[0]) }
 						| Par ',' Par				{ result = Multiple_Par.new(val[0],val[2])}
 						;
 

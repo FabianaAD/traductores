@@ -162,7 +162,7 @@ class For < AST
 	def initialize i,f,t,by,bl=nil
 		@id = Identificador.new(i)
 		@from = Numero.new(f)
-		@to = Numero.new(t)
+		@to = t
 		if bl != nil
 			@by = Numero.new(by)
 			@bloque = bl
