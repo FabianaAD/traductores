@@ -10,5 +10,5 @@ begin
 end;
 
 program
-4+4;
+4-4-5.68888;
 end;

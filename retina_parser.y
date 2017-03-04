@@ -107,7 +107,6 @@ rule
 						| 'read' Id ';'																												{ result = Read.new(val[1]) }
 						| 'write' Imp	';'																											{ result = Write.new(val[1]) }
 						| 'writeln' Imp ';'																										{ result = Writeln.new(val[1]) }
-						| 'str' ';'																														{ result = Cadena.new(val[0]) }
 						| Bloque Bloque																												{ result = Bloque_Cod.new(val[0],val[1]) }
 						;
 
