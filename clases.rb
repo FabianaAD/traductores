@@ -145,3 +145,97 @@ class Pr_Write < Token; end
 class Str < Token; end
 class Pr_Writeln < Token; end
 class Comentario < Token; end
+
+
+#CLASE DE TABLA DE SIMBOLOS
+
+
+class TablaSimb
+	attr_accessor :id_type
+	attr_accessor :id_val
+	attr_accessor :padre
+
+	def initialize()
+		@id_type = Hash.new()
+		@id_val = Hash.new()
+		@padre = nil
+	end
+
+
+	def addtype(id,type)
+		if not self.get_val(id)[0]
+			@id_type[id]=type
+
+
+			######### llenar con el valor por default
+			#dependiendo del tipo
+			if type=="boolean"
+				val= false
+			elsif type=="number"
+				val = 0
+			else
+				val = ""
+			end
+			########
+			@id_val[id]=val
+			return self
+		else
+			print "ERROR: Reasignacion de tipo a una variable "
+			print id
+			print " en el mismo alcance.\n"
+			#exit
+		end
+	end
+
+
+	def mostrar()
+	 	print "\nTabla de simbolos\n"
+	 	ids = @id_type.keys()
+	 	types = @id_type.values()
+	 	values = @id_val.values()
+	 	i = 0
+		s = "ID\t\tTIPO\t\tVALOR\n-----------------------------------------\n"
+	 	while i<ids.length
+	 		s=s+"\n"+ids[i]+"\t\t"+types[i].to_s + "\t\t"+values[i].to_s+"\n"
+	 		i=i+1
+	 	end
+	 	puts s
+	end
+
+	def addvalor(id,val)
+		if self.get_val(id)[0]
+			print "Error: variable no declarada: '"
+			print id
+			print "'."
+		else
+			if true #revisar que el tipo de val sea igual a @id_type[id]
+				#revisar que el tipo de val es igual al tipo de @id_val[id] ya
+				#que todo valor se inicializa
+			 	@id_val[id] = val
+			else
+				print "Error: '"
+				print val
+				print "' es una expresión de tipo '"
+				print "tipo de val"
+				print "' y se esperaba una de tipo '"
+				print @id_type[id]
+				print "'."
+			end
+		end
+	end
+
+
+	def get_val(id)
+		aux = [false,nil]
+		if not @id_type.key?(id)
+			if !@padre.nil?
+				return @padre.get_val(id)
+			end
+		else
+			aux=[true,@id_val[id]]
+		end
+		return aux
+	end
+
+
+end
