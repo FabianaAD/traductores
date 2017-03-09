@@ -12,6 +12,13 @@ class AST
 			instance_variable_get a
 		end
 	end
+
+	def evalexp ts
+		attrs.each do |a|
+			ts = a.evalexp(ts)[0] if a.respond_to? :evalexp
+		end
+		return [ts,nil]
+	end
 end
 
 class Numero < AST
@@ -24,17 +31,25 @@ class Numero < AST
 	def print_ast indent=""
 		puts "#{indent}#{self.class}: #{@digito.t}"
 	end
+
+	def evalexp ts
+		return [ts,@digito]
+	end
 end
 
 class Identificador < AST
 	attr_accessor :texto
 
 	def initialize txt
-			@texto = txt.t
+		@texto = txt.t
 	end
 
 	def print_ast indent=""
 			puts "#{indent}Identificador: #{@texto}"
+	end
+
+	def evalexp ts
+		return [ts,@texto]
 	end
 end
 
@@ -81,8 +96,8 @@ class Declaracion < AST
 	end
 
 	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
 
+		puts "#{indent}#{self.class}:"
 		indent += "  "
 
 		@nombre.print_ast indent if @nombre.respond_to? :print_ast
@@ -95,11 +110,24 @@ class Declaracion < AST
 			@valor.print_ast indent + "  " if @valor.respond_to? :print_ast	
 		end
 	end
+
+	def evalexp ts
+		auxid = @id.evalexp(ts)
+		auxtype = @nombre.evalexp(ts)
+		ts.addtype(auxid[1],auxtype[1])
+		return [ts,nil]
+
+	end
+
 end
 
 class Number < AST
 	def print_ast indent=""
 		puts "#{indent}Tipo: number"
+	end
+
+	def evalexp ts
+		return [ts,self.class]
 	end
 end
 
@@ -107,111 +135,115 @@ class Boolean < AST
 	def print_ast indent=""
 		puts "#{indent}Tipo: boolean"
 	end
-end
 
-class If < AST
-	attr_accessor :cond, :inst1, :inst2
-
-	def initialize c, i1, i2=nil
-		@cond = c
-		@inst1 = i1
-		@inst2 = i2
-	end
-
-	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
-
-		indent += "  "
-		puts "#{indent}Condicion:"
-		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
-
-		puts "#{indent}Bloque then:"
-		@inst1.print_ast indent + "  " if @inst1.respond_to? :print_ast
-
-		# Si hay dos bloques de instrucciones
-		if @inst2 != nil
-			puts "#{indent}Bloque else:"
-			@inst2.print_ast indent + "  " if @inst2.respond_to? :print_ast	
-		end
-	end
-end	
-
-class While < AST
-	attr_accessor :cond, :inst
-
-	def initialize c, i
-		@cond = c
-		@inst = i
-	end
-
-	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
-
-		indent += "  "
-		puts "#{indent}Condicion:"
-		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
-
-		puts "#{indent}Bloque:"
-		@inst.print_ast indent + "  " if @inst.respond_to? :print_ast
-	end
-end	
-
-class For < AST
-	attr_accessor :id, :from, :to, :by, :bloque
-
-	def initialize i,f,t,by,bl=nil
-		@id = Identificador.new(i)
-		@from = Numero.new(f)
-		@to = t
-		if bl != nil
-			@by = Numero.new(by)
-			@bloque = bl
-			puts "#{bl}"
-		else
-			@by = nil
-			@bloque = Bloque_Cod.new(by,nil)
-		end
-	end
-
-	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
-
-		@id.print_ast indent + "  " if @id.respond_to? :print_ast
-
-		puts "#{indent}From:"
-		@from.print_ast indent + "  " if @from.respond_to? :print_ast
-
-		puts "#{indent}To:"
-		@to.print_ast indent + "  " if @to.respond_to? :print_ast
-
-		if @by != nil
-			puts "#{indent}By:"
-			@by.print_ast indent + "  " if @by.respond_to? :print_ast
-		end	
-
-		puts "#{indent}Bloque:"
-		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+	def evalexp ts
+		return [ts,self.class]
 	end
 end
 
-class Repeat < AST
-	attr_accessor :n, :bloque
+# class If < AST
+# 	attr_accessor :cond, :inst1, :inst2
 
-	def initialize n,b
-		@n = Numero.new(n)
-		@bloque = b
-	end
+# 	def initialize c, i1, i2=nil
+# 		@cond = c
+# 		@inst1 = i1
+# 		@inst2 = i2
+# 	end
 
-	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class}:"
 
-		puts "#{indent}Times:"
-		@n.print_ast indent + "  " if @n.respond_to? :print_ast
+# 		indent += "  "
+# 		puts "#{indent}Condicion:"
+# 		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
 
-		puts "#{indent}Bloque:"
-		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
-	end
-end
+# 		puts "#{indent}Bloque then:"
+# 		@inst1.print_ast indent + "  " if @inst1.respond_to? :print_ast
+
+# 		# Si hay dos bloques de instrucciones
+# 		if @inst2 != nil
+# 			puts "#{indent}Bloque else:"
+# 			@inst2.print_ast indent + "  " if @inst2.respond_to? :print_ast	
+# 		end
+# 	end
+# end	
+
+# class While < AST
+# 	attr_accessor :cond, :inst
+
+# 	def initialize c, i
+# 		@cond = c
+# 		@inst = i
+# 	end
+
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class}:"
+
+# 		indent += "  "
+# 		puts "#{indent}Condicion:"
+# 		@cond.print_ast indent + "  " if @cond.respond_to? :print_ast
+
+# 		puts "#{indent}Bloque:"
+# 		@inst.print_ast indent + "  " if @inst.respond_to? :print_ast
+# 	end
+# end	
+
+# class For < AST
+# 	attr_accessor :id, :from, :to, :by, :bloque
+
+# 	def initialize i,f,t,by,bl=nil
+# 		@id = Identificador.new(i)
+# 		@from = Numero.new(f)
+# 		@to = t
+# 		if bl != nil
+# 			@by = Numero.new(by)
+# 			@bloque = bl
+# 			puts "#{bl}"
+# 		else
+# 			@by = nil
+# 			@bloque = Bloque_Cod.new(by,nil)
+# 		end
+# 	end
+
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class}:"
+
+# 		@id.print_ast indent + "  " if @id.respond_to? :print_ast
+
+# 		puts "#{indent}From:"
+# 		@from.print_ast indent + "  " if @from.respond_to? :print_ast
+
+# 		puts "#{indent}To:"
+# 		@to.print_ast indent + "  " if @to.respond_to? :print_ast
+
+# 		if @by != nil
+# 			puts "#{indent}By:"
+# 			@by.print_ast indent + "  " if @by.respond_to? :print_ast
+# 		end	
+
+# 		puts "#{indent}Bloque:"
+# 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+# 	end
+# end
+
+# class Repeat < AST
+# 	attr_accessor :n, :bloque
+
+# 	def initialize n,b
+# 		@n = Numero.new(n)
+# 		@bloque = b
+# 	end
+
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class}:"
+
+# 		puts "#{indent}Times:"
+# 		@n.print_ast indent + "  " if @n.respond_to? :print_ast
+
+# 		puts "#{indent}Bloque:"
+# 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+# 	end
+# end
 
 class Booleano < AST
 	attr_accessor :nombre
@@ -222,6 +254,10 @@ class Booleano < AST
 
 	def print_ast indent=""
 			puts "#{indent}Booleano: #{@nombre}"
+	end
+
+	def evalexp ts
+		return [ts,@nombre]
 	end
 end	
 
@@ -243,6 +279,13 @@ class With < AST
 		puts "#{indent}Bloque:"
 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
 	end
+
+	def evalexp ts
+		ts = @decl.evalexp(ts)[0] if decl.respond_to? :evalexp
+		ts = @bloque.evalexp(ts)[0] if bloque.respond_to? :evalexp
+		return [ts,nil]
+	end
+
 end	
 
 class Bloque_Cod < OperacionBinaria
@@ -250,6 +293,13 @@ class Bloque_Cod < OperacionBinaria
 		attrs.each do |a|
 			a.print_ast indent if a.respond_to? :print_ast
 		end
+	end
+
+	def evalexp ts
+		attrs.each do |a|
+			ts = a.evalexp(ts)[0] if a.respond_to? :evalexp
+		end
+		return [ts,nil]
 	end
 end
 
@@ -259,117 +309,124 @@ class Multiple < OperacionBinaria
 			a.print_ast indent if a.respond_to? :print_ast
 		end
 	end
-end
 
-class Multiple_Func < OperacionBinaria
-	def print_ast indent=""
+	def evalexp ts
 		attrs.each do |a|
-			a.print_ast indent if a.respond_to? :print_ast
+			ts = a.evalexp(ts)[0] if a.respond_to? :evalexp
 		end
+		return [ts,nil]
 	end
 end
 
-class Funcion < AST
-	attr_accessor :id, :arg, :tipo, :bloque, :ret
+# class Multiple_Func < OperacionBinaria
+# 	def print_ast indent=""
+# 		attrs.each do |a|
+# 			a.print_ast indent if a.respond_to? :print_ast
+# 		end
+# 	end
+# end
 
-	def initialize i,a,b,t=nil,r=nil
-		@id = i
-		@arg = a
-		@tipo = t
-		@bloque = b
-		@ret = r
-	end
+# class Funcion < AST
+# 	attr_accessor :id, :arg, :tipo, :bloque, :ret
 
-	def print_ast indent=""
-		puts "#{indent}#{self.class}:"
+# 	def initialize i,a,b,t=nil,r=nil
+# 		@id = i
+# 		@arg = a
+# 		@tipo = t
+# 		@bloque = b
+# 		@ret = r
+# 	end
 
-		indent += "  "
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class}:"
 
-		@id.print_ast indent if @id.respond_to? :print_ast
+# 		indent += "  "
 
-		if @arg != nil	
-			@arg.print_ast indent if @arg.respond_to? :print_ast
-		end
+# 		@id.print_ast indent if @id.respond_to? :print_ast
 
-		if @tipo != nil	
-			@tipo.print_ast indent if @tipo.respond_to? :print_ast
-		end
+# 		if @arg != nil	
+# 			@arg.print_ast indent if @arg.respond_to? :print_ast
+# 		end
 
-		puts "#{indent}Bloque:"
-		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
+# 		if @tipo != nil	
+# 			@tipo.print_ast indent if @tipo.respond_to? :print_ast
+# 		end
 
-		if @ret != nil
-			puts "#{indent}Retorno:"
-			@ret.print_ast indent + "  " if @ret.respond_to? :print_ast
-		end
-	end
-end	
+# 		puts "#{indent}Bloque:"
+# 		@bloque.print_ast indent + "  " if @bloque.respond_to? :print_ast
 
-class Multiple_Arg < OperacionBinaria
-	def print_ast indent=""
-		attrs.each do |a|
-			a.print_ast indent if a.respond_to? :print_ast
-		end
-	end
-end
+# 		if @ret != nil
+# 			puts "#{indent}Retorno:"
+# 			@ret.print_ast indent + "  " if @ret.respond_to? :print_ast
+# 		end
+# 	end
+# end	
 
-class Multiple_Prog < OperacionBinaria
-	def print_ast indent=""
-		attrs.each do |a|
-			a.print_ast indent if a.respond_to? :print_ast
-		end
-	end
-end
+# class Multiple_Arg < OperacionBinaria
+# 	def print_ast indent=""
+# 		attrs.each do |a|
+# 			a.print_ast indent if a.respond_to? :print_ast
+# 		end
+# 	end
+# end
 
-class Multiple_Par < OperacionBinaria
-	def print_ast indent=""
-		attrs.each do |a|
-			a.print_ast indent if a.respond_to? :print_ast
-		end
-	end
-end
+# class Multiple_Prog < OperacionBinaria
+# 	def print_ast indent=""
+# 		attrs.each do |a|
+# 			a.print_ast indent if a.respond_to? :print_ast
+# 		end
+# 	end
+# end
 
-class Llamada < AST
-	attr_accessor :id, :par
+# class Multiple_Par < OperacionBinaria
+# 	def print_ast indent=""
+# 		attrs.each do |a|
+# 			a.print_ast indent if a.respond_to? :print_ast
+# 		end
+# 	end
+# end
 
-	def initialize i,a=nil
-		@id = i
-		@par = a
-	end
+# class Llamada < AST
+# 	attr_accessor :id, :par
 
-	def print_ast indent=""
-		puts "#{indent}#{self.class} a funcion:"
+# 	def initialize i,a=nil
+# 		@id = i
+# 		@par = a
+# 	end
 
-		indent += "  "
+# 	def print_ast indent=""
+# 		puts "#{indent}#{self.class} a funcion:"
 
-		@id.print_ast indent + "  " if @id.respond_to? :print_ast
+# 		indent += "  "
 
-		if @par != nil
-			puts "#{indent}Parametros:"
-			@par.print_ast indent + "  " if @par.respond_to? :print_ast
-		end
-	end
-end
+# 		@id.print_ast indent + "  " if @id.respond_to? :print_ast
 
-class Multiple_Imp < OperacionBinaria
-	def print_ast indent=""
-		attrs.each do |a|
-			a.print_ast indent if a.respond_to? :print_ast
-		end
-	end
-end	
+# 		if @par != nil
+# 			puts "#{indent}Parametros:"
+# 			@par.print_ast indent + "  " if @par.respond_to? :print_ast
+# 		end
+# 	end
+# end
 
-class Cadena < AST
-	attr_accessor :texto
+# class Multiple_Imp < OperacionBinaria
+# 	def print_ast indent=""
+# 		attrs.each do |a|
+# 			a.print_ast indent if a.respond_to? :print_ast
+# 		end
+# 	end
+# end	
 
-	def initialize txt
-			@texto = txt.t
-	end
+# class Cadena < AST
+# 	attr_accessor :texto
 
-	def print_ast indent=""
-			puts "#{indent}Cadena: #{@texto}"
-	end
-end
+# 	def initialize txt
+# 			@texto = txt.t
+# 	end
+
+# 	def print_ast indent=""
+# 			puts "#{indent}Cadena: #{@texto}"
+# 	end
+# end
 
 class Igual < OperacionBinaria; end
 class Suma < OperacionBinaria; end

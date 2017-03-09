@@ -19,6 +19,7 @@ def main
 	end
 	# Crear lexer
 	lexer = Lexer.new input
+	tabs = TablaSimb.new()
 	# Obtener tokens hasta que se termine el input
 	begin
 		while lexer.catch_lexeme; end
@@ -26,7 +27,14 @@ def main
 			lexer = Lexer.new input
 			parser = Parser.new
 			ast = parser.parse lexer
-			ast.print_ast
+			#new
+			tabs.mostrar()
+			aux = ast.evalexp tabs
+			puts "llego aqui"
+			tabs.mostrar()
+			#new
+
+			#ast.print_ast
 		rescue SyntacticError => e
 			puts e
 			return

@@ -146,7 +146,6 @@ class Str < Token; end
 class Pr_Writeln < Token; end
 class Comentario < Token; end
 
-
 #CLASE DE TABLA DE SIMBOLOS
 
 
@@ -169,7 +168,7 @@ class TablaSimb
 
 			######### llenar con el valor por default
 			#dependiendo del tipo
-			if type=="boolean"
+			if type==Boolean
 				val= false
 			elsif type=="number"
 				val = 0
