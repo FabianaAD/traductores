@@ -31,7 +31,7 @@ $tokens = {
 	Residuo_Entero:			/\Amod/,
 	Idtf:								/\A([a-z])(\w)*\b/,
 	Str:								/\A"([a-z | A-Z | 0-9])[\w|\W|\s]*"/,
-	Comentario:					/\A#[\w|\s]*\n/,
+	Comentario:					/\A#[\w|\W|\s]*\n/,
 	Adicion:						/\A\+/,
 	Sustraccion:				/\A\-\b/,
 	Repeticion:					/\A\*/,
@@ -174,9 +174,6 @@ class TablaSimb
 			elsif type==Numero
 				val = 0
 				@id_type[id]=Numero
-			elsif type==Funcion
-				val=TablaSimb.new()
-				@id_type[id]=Funcion
 			else
 				val = ""
 			end

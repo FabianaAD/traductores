@@ -681,7 +681,7 @@ module_eval(<<'.,.,', 'retina_parser.y', 83)
 
 module_eval(<<'.,.,', 'retina_parser.y', 84)
   def _reduce_5(val, _values, result)
-     result = Funcion.new(val[1],val[5]) 
+     result = Funcion.new(val[1],nil,val[5]) 
     result
   end
 .,.,
