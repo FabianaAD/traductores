@@ -429,17 +429,17 @@ end
 # 	end
 # end	
 
-# class Cadena < AST
-# 	attr_accessor :texto
+class Cadena < AST
+	attr_accessor :texto
 
-# 	def initialize txt
-# 			@texto = txt.t
-# 	end
+	def initialize txt
+			@texto = txt.t
+	end
 
-# 	def print_ast indent=""
-# 			puts "#{indent}Cadena: #{@texto}"
-# 	end
-# end
+	def print_ast indent=""
+			puts "#{indent}Cadena: #{@texto}"
+	end
+end
 
 
 class Suma < OperacionBinaria; end

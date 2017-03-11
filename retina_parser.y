@@ -88,7 +88,7 @@ rule
 						;
 
 		Arg			: TipoVar Id							{ result = Declaracion.new(val[0],val[1]) }
-						| Arg ',' TipoVar  Id			{ result = Multiple_Arg.new(val[0],Declaracion.new(val[2],val[3]))}
+						| Arg ',' TipoVar  Id			{ result = Multiple.new(val[0],Declaracion.new(val[2],val[3]))}
 						;
 
 		Bloque  : Decl																										
@@ -115,7 +115,7 @@ rule
 
 		Imp			: Exp
 						| 'str'							{ result = Cadena.new(val[0]) }
-						| Imp ',' Imp				{ result = Multiple_Imp.new(val[0],val[2]) }
+						| Imp ',' Imp				{ result = Multiple.new(val[0],val[2]) }
 						;
 
 		Par			: 'id'							{ result = Identificador.new(val[0]) }

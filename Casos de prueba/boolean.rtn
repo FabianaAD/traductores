@@ -1,0 +1,7 @@
+program
+    with
+        boolean p;
+    do
+        p = 27;
+    end; 
+end;

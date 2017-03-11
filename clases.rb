@@ -30,7 +30,7 @@ $tokens = {
 	Fraccion_Entera:		/\Adiv/,
 	Residuo_Entero:			/\Amod/,
 	Idtf:								/\A([a-z])(\w)*\b/,
-	Str:								/\A"([a-z | A-Z | 0-9])[\w|\s]*"/,
+	Str:								/\A"([a-z | A-Z | 0-9])[\w|\W|\s]*"/,
 	Comentario:					/\A#[\w|\s]*\n/,
 	Adicion:						/\A\+/,
 	Sustraccion:				/\A\-\b/,

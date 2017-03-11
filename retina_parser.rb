@@ -709,7 +709,7 @@ module_eval(<<'.,.,', 'retina_parser.y', 89)
 
 module_eval(<<'.,.,', 'retina_parser.y', 90)
   def _reduce_9(val, _values, result)
-     result = Multiple_Arg.new(val[0],Declaracion.new(val[2],val[3]))
+     result = Multiple.new(val[0],Declaracion.new(val[2],val[3]))
     result
   end
 .,.,
@@ -848,7 +848,7 @@ module_eval(<<'.,.,', 'retina_parser.y', 116)
 
 module_eval(<<'.,.,', 'retina_parser.y', 117)
   def _reduce_31(val, _values, result)
-     result = Multiple_Imp.new(val[0],val[2]) 
+     result = Multiple.new(val[0],val[2]) 
     result
   end
 .,.,
