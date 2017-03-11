@@ -82,7 +82,7 @@ rule
 
 		Funcion	: Funcion Funcion																													{ result = Multiple_Func.new(val[0],val[1]) }
 						| 'func' Id '(' Arg ')' 'begin' Bloque 'end' ';'													{ result = Funcion.new(val[1],val[3],val[6]) }
-						| 'func' Id '(' ')' 'begin' Bloque 'end' ';'															{ result = Funcion.new(val[1],val[5]) }
+						| 'func' Id '(' ')' 'begin' Bloque 'end' ';'															{ result = Funcion.new(val[1],nil,val[5]) }
 						| 'func' Id '(' Arg ')' '->' TipoVar 'begin' Bloque 'return' Exp ';' 'end' ';'		{ result = Funcion.new(val[1],val[3],val[8],val[6],val[10]) }
 						| 'func' Id '(' ')' '->' TipoVar 'begin' Bloque 'return' Exp ';' 'end' ';'				{ result = Funcion.new(val[1],nil,val[7],val[5],val[9]) }
 						;
