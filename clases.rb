@@ -174,6 +174,9 @@ class TablaSimb
 			elsif type==Numero
 				val = 0
 				@id_type[id]=Numero
+			elsif type==Funcion
+				val=TablaSimb.new()
+				@id_type[id]=Funcion
 			else
 				val = ""
 			end
