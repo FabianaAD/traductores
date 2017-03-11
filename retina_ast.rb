@@ -33,7 +33,7 @@ class Numero < AST
 	end
 
 	def evalexp ts
-		return [ts,@digito]
+		return [ts,@digito.t]
 	end
 end
 
@@ -112,6 +112,7 @@ class Declaracion < AST
 	end
 
 	def evalexp ts
+		self.print_ast()
 		auxid = @id.evalexp(ts)
 		auxtype = @nombre.evalexp(ts)
 		ts.addtype(auxid[1],auxtype[1])
@@ -318,6 +319,30 @@ class Multiple < OperacionBinaria
 	end
 end
 
+class Igual < OperacionBinaria
+	def initialize i, v
+		@id = i
+		@valor = v
+	end
+
+	def evalexp ts
+		puts "*************************"
+		puts @id.evalexp(ts)[1]
+		puts @valor.evalexp(ts)[1]
+		puts @valor.class
+		puts "*************************"
+		ts.addvalor(@id.evalexp(ts)[1],@valor.class,@valor.evalexp(ts)[1])
+		ts.mostrar()
+		# #self.print_ast()
+		# def addvalor(id,typ,val)
+		# auxid = @id.evalexp(ts)
+		# auxval = @nombre.evalexp(ts)
+		# #ts.addvalor(auxid[1],type,auxval[1])
+		return [ts,nil]
+	end
+						
+end
+
 # class Multiple_Func < OperacionBinaria
 # 	def print_ast indent=""
 # 		attrs.each do |a|
@@ -428,7 +453,7 @@ end
 # 	end
 # end
 
-class Igual < OperacionBinaria; end
+
 class Suma < OperacionBinaria; end
 class Resta < OperacionBinaria; end
 class Multiplicacion < OperacionBinaria; end

@@ -163,15 +163,17 @@ class TablaSimb
 
 	def addtype(id,type)
 		if not self.get_val(id)[0]
-			@id_type[id]=type
+			#@id_type[id]=type
 
 
 			######### llenar con el valor por default
 			#dependiendo del tipo
 			if type==Boolean
 				val= false
-			elsif type=="number"
+				@id_type[id]=Booleano
+			elsif type==Numero
 				val = 0
+				@id_type[id]=Numero
 			else
 				val = ""
 			end
@@ -201,21 +203,19 @@ class TablaSimb
 	 	puts s
 	end
 
-	def addvalor(id,val)
-		if self.get_val(id)[0]
+	def addvalor(id,typ,val)
+		if not self.get_val(id)[0]
 			print "Error: variable no declarada: '"
 			print id
 			print "'."
 		else
-			if true #revisar que el tipo de val sea igual a @id_type[id]
-				#revisar que el tipo de val es igual al tipo de @id_val[id] ya
-				#que todo valor se inicializa
+			if @id_type[id]==typ
 			 	@id_val[id] = val
 			else
 				print "Error: '"
 				print val
 				print "' es una expresión de tipo '"
-				print "tipo de val"
+				print typ
 				print "' y se esperaba una de tipo '"
 				print @id_type[id]
 				print "'."
