@@ -30,7 +30,6 @@ def main
 			#new
 			tabs.mostrar()
 			aux = ast.evalexp tabs
-			puts "llego aqui"
 			tabs.mostrar()
 			#new
 
